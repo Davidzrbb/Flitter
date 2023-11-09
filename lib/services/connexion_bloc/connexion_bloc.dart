@@ -2,7 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../models/ConnexionUser.dart';
+import '../../models/ConnexionUser.dart';
 import 'package:dio/dio.dart';
 
 part 'connexion_event.dart';

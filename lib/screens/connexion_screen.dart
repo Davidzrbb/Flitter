@@ -1,17 +1,11 @@
 import 'package:flitter/models/ConnexionUser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../services/connexion_bloc/connexion_bloc.dart';
 
-import 'connexion_bloc/connexion_bloc.dart';
+class ConnexionScreen extends StatelessWidget {
+  ConnexionScreen({Key? key}) : super(key: key);
 
-class ConnexionScreen extends StatefulWidget {
-  const ConnexionScreen({super.key});
-
-  @override
-  State<ConnexionScreen> createState() => _ConnexionScreenState();
-}
-
-class _ConnexionScreenState extends State<ConnexionScreen> {
   final _passwordTextController = TextEditingController();
 
   final _emailTextController = TextEditingController();
