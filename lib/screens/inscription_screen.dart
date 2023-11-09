@@ -1,15 +1,14 @@
-import 'package:flitter/models/connexion_user.dart';
+import 'package:flitter/models/inscription_user.dart';
+import 'package:flitter/services/inscription_bloc/inscription_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../services/connexion_bloc/connexion_bloc.dart';
 
-class ConnexionScreen extends StatelessWidget {
-  ConnexionScreen({Key? key}) : super(key: key);
+class InscriptionScreen extends StatelessWidget {
+  InscriptionScreen({Key? key}) : super(key: key);
 
   final _passwordTextController = TextEditingController();
-
   final _emailTextController = TextEditingController();
-
+  final _nameTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -22,8 +21,24 @@ class ConnexionScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Connexion',
-                  style: Theme.of(context).textTheme.headlineMedium),
+              Text('Inscription',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headlineMedium),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                  controller: _nameTextController,
+                  decoration: const InputDecoration(hintText: 'Name'),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: TextFormField(
@@ -52,18 +67,18 @@ class ConnexionScreen extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => _signIn(context),
-                child: const Text('Sign in'),
+                onPressed: () => _signUp(context),
+                child: const Text('Sign up'),
               ),
-              BlocBuilder<ConnexionBloc, ConnexionState>(
+              BlocBuilder<InscriptionBloc, InscriptionState>(
                 builder: (context, state) {
                   // Handle different states here
-                  if (state.status == ConnexionStatus.loading) {
+                  if (state.status == InscriptionStatus.loading) {
                     return const CircularProgressIndicator();
-                  } else if (state.status == ConnexionStatus.success) {
-                    return const Text('Login successful',
+                  } else if (state.status == InscriptionStatus.success) {
+                    return const Text('Sign up successful',
                         style: TextStyle(color: Colors.green));
-                  } else if (state.status == ConnexionStatus.error) {
+                  } else if (state.status == InscriptionStatus.error) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(state.error.toString(),
@@ -76,7 +91,7 @@ class ConnexionScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => {},
-                child: const Text('Don\'t have an account? Sign up.'),
+                child: const Text('You have an account? Sign In.'),
               ),
             ],
           ),
@@ -85,13 +100,15 @@ class ConnexionScreen extends StatelessWidget {
     );
   }
 
-  _signIn(BuildContext context) async {
+  _signUp(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       final String email = _emailTextController.text;
       final String password = _passwordTextController.text;
-      final connexionBloc = BlocProvider.of<ConnexionBloc>(context);
-      connexionBloc.add(
-          ConnexionSubmitted(ConnexionUser(email: email, password: password)));
+      final String name = _nameTextController.text;
+      final inscriptionBloc = BlocProvider.of<InscriptionBloc>(context);
+      inscriptionBloc.add(InscriptionSubmitted(InscriptionUser(
+          email: email, password: password, name: name
+      )));
     }
   }
 }

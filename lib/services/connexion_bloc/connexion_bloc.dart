@@ -2,7 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/ConnexionUser.dart';
+import '../../models/connexion_user.dart';
 import 'package:dio/dio.dart';
 
 part 'connexion_event.dart';
@@ -19,7 +19,7 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
     emit(state.copyWith(status: ConnexionStatus.loading));
 
     try {
-      final token = await doConnexion(ConnexionUser(
+      final token = await _doConnexion(ConnexionUser(
           email: event.connexionUser.email,
           password: event.connexionUser.password));
       emit(state.copyWith(
@@ -33,7 +33,7 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
     }
   }
 
-  Future<bool> doConnexion(ConnexionUser connexionUser) async {
+  Future<bool> _doConnexion(ConnexionUser connexionUser) async {
     final dio = Dio(
       BaseOptions(
         baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
