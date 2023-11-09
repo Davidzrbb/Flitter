@@ -8,3 +8,12 @@ class ConnexionSubmitted extends ConnexionEvent {
 
   ConnexionSubmitted(this.connexionUser);
 }
+
+class IsConnected extends ConnexionEvent {
+  final BuildContext context;
+  IsConnected(this.context);
+}
+
+class Disconnected extends ConnexionEvent {
+  Disconnected();
+}

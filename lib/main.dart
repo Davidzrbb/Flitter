@@ -1,5 +1,4 @@
-import 'package:flitter/screens/connexion_screen.dart';
-import 'package:flitter/screens/inscription_screen.dart';
+import 'package:flitter/router/go_router.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/services/inscription_bloc/inscription_bloc.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +22,9 @@ class MyApp extends StatelessWidget {
             create: (context) => InscriptionBloc(),
           ),
         ],
-        child: MaterialApp(
-            home: Scaffold(
-          body: InscriptionScreen(),
-        )));
+        child: MaterialApp.router(
+          title: 'Flitter',
+          routerConfig: router,
+        ));
   }
 }
