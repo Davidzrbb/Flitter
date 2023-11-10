@@ -1,4 +1,6 @@
+import 'package:flitter/screens/write_post_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,20 +23,24 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body:
-          BlocBuilder<ConnexionBloc, ConnexionState>(builder: (context, state) {
-        return Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Welcome !'),
-              const SizedBox(height: 20),
-              Text('${state.user?.email}'),
-              Text('${state.user?.name}'),
-            ],
-          ),
-        );
-      }),
+      body: const SizedBox(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return const WritePostScreen();
+              },
+            );
+          },
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.add),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 
