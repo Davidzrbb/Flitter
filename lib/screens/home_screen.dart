@@ -15,7 +15,6 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Flitter'),
         centerTitle: true,
-        /*add icon*/
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

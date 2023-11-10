@@ -21,10 +21,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   void _onPostImagePicked(PostImagePicked event, Emitter<PostState> emit) {
-    emit(state.copyWith(
-      imageBase64: event.image,
-      status: PostStatus.loading
-    ));
+    emit(state.copyWith(imageBase64: event.image, status: PostStatus.loading));
   }
 
   void _onPostSubmitted(PostSubmitted event, Emitter<PostState> emit) async {
@@ -33,7 +30,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
-        final post = await _doPost(
+        await _doPost(
             WritePost(
                 content: event.writePost.content,
                 imageBase64: event.writePost.imageBase64),
@@ -73,14 +70,13 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         ),
         'content': writePost.content,
       });
-
     } else {
       formData = FormData.fromMap({
         'content': writePost.content,
       });
     }
 
-    Response<dynamic> response = await dio
+    await dio
         .post(
           '/post',
           data: formData,

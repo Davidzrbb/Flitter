@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import '../models/write_post.dart';
@@ -62,9 +61,6 @@ class WritePostScreen extends StatelessWidget {
                             textFieldController.text,
                             state.imageBase64,
                           );
-                          textFieldController.clear();
-                          BlocProvider.of<PostBloc>(context)
-                              .add(PostImagePicked(null));
                         },
                         child: const Text('Publier'),
                       );
@@ -79,7 +75,9 @@ class WritePostScreen extends StatelessWidget {
                     },
                     child: BlocBuilder<PostBloc, PostState>(
                       builder: (context, state) {
-                        if (state.status == PostStatus.loading && state.imageBase64 == null) {
+                        if (state.status == PostStatus.loading &&
+                            state.imageBase64 == null &&
+                            textFieldController.text.isNotEmpty) {
                           return const CircularProgressIndicator();
                         }
                         if (state.status == PostStatus.error) {
