@@ -1,11 +1,11 @@
 import 'package:flitter/models/get_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 import '../services/post_get_bloc/post_get_bloc.dart';
 
 class PostListScreen extends StatefulWidget {
-
   const PostListScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,6 +15,7 @@ class PostListScreen extends StatefulWidget {
 class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
   List<Item> allItem = <Item>[];
+  final List<Widget> _painters = <Widget>[];
   bool hasMore = true;
   int page = 1;
 
@@ -60,7 +61,17 @@ class _PostListScreenState extends State<PostListScreen> {
                 itemBuilder: (context, index) {
                   if (index < allItem.length) {
                     final item = allItem[index];
+                    String svg = RandomAvatarString(item.author.id.toString(),
+                        trBackground: true);
+                    _painters.add(
+                      RandomAvatar(
+                        svg,
+                        height: 50,
+                        width: 52,
+                      ),
+                    );
                     return ListTile(
+                      leading: _painters[index],
                       title: Text(item.author.name),
                       subtitle: Text(item.content),
                     );
@@ -104,4 +115,3 @@ class _PostListScreenState extends State<PostListScreen> {
     });
   }
 }
-
