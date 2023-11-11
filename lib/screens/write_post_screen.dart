@@ -71,6 +71,7 @@ class WritePostScreen extends StatelessWidget {
                     listener: (BuildContext context, PostState state) {
                       if (state.status == PostStatus.success) {
                         Navigator.pop(context);
+                        showSuccessMessage(context);
                       }
                     },
                     child: BlocBuilder<PostBloc, PostState>(
@@ -111,5 +112,16 @@ class WritePostScreen extends StatelessWidget {
         ),
       );
     }
+  }
+
+  void showSuccessMessage(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Votre post a été publié avec succès.'),
+        backgroundColor: Colors.green,
+        duration: Duration(
+            seconds: 3), // Durée pendant laquelle le message sera affiché
+      ),
+    );
   }
 }

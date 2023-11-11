@@ -1,3 +1,4 @@
+import 'package:flitter/screens/post_list_screen.dart';
 import 'package:flitter/screens/write_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const SizedBox(),
+      body: const PostListScreen(),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
         child: FloatingActionButton(
