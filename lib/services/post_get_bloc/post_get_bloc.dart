@@ -18,7 +18,6 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
   }
 
   void _onPostGetAll(PostGetAll event, Emitter<PostGetState> emit) async {
-    emit(state.copyWith(status: PostGetStatus.loading));
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {

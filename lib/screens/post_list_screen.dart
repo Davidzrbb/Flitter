@@ -1,9 +1,11 @@
+import 'package:flitter/models/get_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../services/post_get_bloc/post_get_bloc.dart';
 
 class PostListScreen extends StatefulWidget {
+
   const PostListScreen({Key? key}) : super(key: key);
 
   @override
@@ -11,11 +13,26 @@ class PostListScreen extends StatefulWidget {
 }
 
 class _PostListScreenState extends State<PostListScreen> {
+  final ScrollController _controller = ScrollController();
+  List<Item> allItem = <Item>[];
+  bool hasMore = true;
+  int page = 1;
+
   @override
   void initState() {
     super.initState();
-    final productsBloc = BlocProvider.of<PostGetBloc>(context);
-    productsBloc.add(PostGetAll(null, null));
+    getAll();
+    _controller.addListener(() {
+      if (_controller.offset == _controller.position.maxScrollExtent) {
+        getAll();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -27,25 +44,36 @@ class _PostListScreenState extends State<PostListScreen> {
           switch (state.status) {
             case PostGetStatus.initial:
               return const SizedBox();
-            case PostGetStatus.loading:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
             case PostGetStatus.error:
               return Center(
-                child: Text(state.error.toString() ?? ''),
+                child: Text(state.error.toString()),
               );
             case PostGetStatus.success:
               final posts = state.posts;
+              if (posts != null && posts.items.isNotEmpty) {
+                allItem.addAll(posts.items);
+              }
               return ListView.separated(
-                itemCount: posts!.itemsReceived,
+                controller: _controller,
+                itemCount: allItem.length + 1,
                 separatorBuilder: (context, _) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
-                  final post = posts.items[index];
-                  return ListTile(
-                    title: Text(post.author.name),
-                    subtitle: Text(post.content),
-                  );
+                  if (index < allItem.length) {
+                    final item = allItem[index];
+                    return ListTile(
+                      title: Text(item.author.name),
+                      subtitle: Text(item.content),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 32.0),
+                      child: Center(
+                        child: hasMore
+                            ? const CircularProgressIndicator()
+                            : const Text('Il n y a plus de posts !'),
+                      ),
+                    );
+                  }
                 },
               );
           }
@@ -55,6 +83,25 @@ class _PostListScreenState extends State<PostListScreen> {
   }
 
   Future refresh() async {
-    // Your refresh logic goes here
+    setState(() {
+      page = 1;
+      allItem.clear();
+      getAll();
+    });
+  }
+
+  getAll() {
+    const limit = 12;
+    final productsBloc = BlocProvider.of<PostGetBloc>(context);
+    productsBloc.add(PostGetAll(page, limit));
+    setState(() {
+      page++;
+      if (allItem.length < page * limit) {
+        hasMore = true;
+      } else {
+        hasMore = false;
+      }
+    });
   }
 }
+
