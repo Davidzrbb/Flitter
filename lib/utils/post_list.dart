@@ -16,9 +16,9 @@ class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
 
   List<Item> allItem = <Item>[];
-  final List<Widget> _painters = <Widget>[];
   bool hasMore = true;
   int page = 1;
+  final limit = 12;
 
   @override
   void initState() {
@@ -54,12 +54,22 @@ class _PostListScreenState extends State<PostListScreen> {
             case PostGetStatus.success:
               final posts = state.posts;
               if (posts != null && posts.items.isNotEmpty) {
-                allItem.addAll(posts.items);
+                allItem.addAll(
+                    posts.items.where((element) => !allItem.contains(element)));
+              }
+              if (posts != null && posts.items.isEmpty) {
+                hasMore = false;
               }
               return ListView.separated(
                 controller: _controller,
                 itemCount: allItem.length + 1,
-                separatorBuilder: (context, _) => const SizedBox(height: 10),
+                separatorBuilder: (context, _) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 1,
+                    color: Colors.grey.shade300,
+                  ),
+                ),
                 itemBuilder: (context, index) {
                   if (index < allItem.length) {
                     final item = allItem[index];
@@ -84,25 +94,18 @@ class _PostListScreenState extends State<PostListScreen> {
     );
   }
 
-  Future refresh() async {
+  Future<void> refresh() async {
     setState(() {
       page = 1;
       allItem.clear();
-      getAll();
     });
   }
 
   getAll() {
-    const limit = 12;
-    final productsBloc = BlocProvider.of<PostGetBloc>(context);
-    productsBloc.add(PostGetAll(page, limit));
     setState(() {
-      page++;
-      if (allItem.length < page * limit) {
-        hasMore = true;
-      } else {
-        hasMore = false;
-      }
+      final productsBloc = BlocProvider.of<PostGetBloc>(context);
+      productsBloc.add(PostGetAll(page, limit));
+      page += 1;
     });
   }
 }

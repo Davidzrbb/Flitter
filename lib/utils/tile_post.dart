@@ -1,7 +1,11 @@
 import 'package:flitter/models/get_post.dart';
+import 'package:flitter/utils/shimmer_image_url.dart';
+import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TilePost extends StatelessWidget {
   const TilePost({
@@ -20,48 +24,27 @@ class TilePost extends StatelessWidget {
         width: 52,
       ),
       title: Text(item.author.name),
-      subtitle: _showMore(item.content, context),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            VoirPlusString(content: item.content),
+            if (item.image != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ShimmerImageUrl(
+                    url: item.image!.url, width: 200, height: 200),
+              )
+          ],
+        ),
+      ),
       trailing: Text(
         DateFormat('dd/MM à HH:mm', 'fr_FR').format(
           DateTime.fromMillisecondsSinceEpoch(item.createdAt),
         ),
+        /*image*/
       ),
     );
   }
-
-  _showMore(String content, BuildContext context) {
-    if (content.length > 15) {
-      return SizedBox(
-        width: 200, // Adjust the width as needed
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                '$content ...',
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(item.author.name),
-                      content: Text(item.content),
-                    );
-                  },
-                );
-              },
-              child: const Text('Voir plus'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return Text(content);
-    }
-  }
-
-
 }
