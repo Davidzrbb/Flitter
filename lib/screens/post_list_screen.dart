@@ -61,17 +61,12 @@ class _PostListScreenState extends State<PostListScreen> {
                 itemBuilder: (context, index) {
                   if (index < allItem.length) {
                     final item = allItem[index];
-                    String svg = RandomAvatarString(item.author.id.toString(),
-                        trBackground: true);
-                    _painters.add(
-                      RandomAvatar(
-                        svg,
+                    return ListTile(
+                      leading: RandomAvatar(
+                        item.author.id.toString(),
                         height: 50,
                         width: 52,
                       ),
-                    );
-                    return ListTile(
-                      leading: _painters[index],
                       title: Text(item.author.name),
                       subtitle: Text(item.content),
                     );
