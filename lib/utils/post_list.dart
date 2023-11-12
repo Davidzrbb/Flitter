@@ -1,9 +1,9 @@
 import 'package:flitter/models/get_post.dart';
+import 'package:flitter/utils/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:random_avatar/random_avatar.dart';
-
 import '../services/post_get_bloc/post_get_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({Key? key}) : super(key: key);
@@ -14,6 +14,7 @@ class PostListScreen extends StatefulWidget {
 
 class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
+
   List<Item> allItem = <Item>[];
   final List<Widget> _painters = <Widget>[];
   bool hasMore = true;
@@ -38,6 +39,7 @@ class _PostListScreenState extends State<PostListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('fr_FR', null);
     return RefreshIndicator(
       onRefresh: refresh,
       child: BlocBuilder<PostGetBloc, PostGetState>(
@@ -61,14 +63,8 @@ class _PostListScreenState extends State<PostListScreen> {
                 itemBuilder: (context, index) {
                   if (index < allItem.length) {
                     final item = allItem[index];
-                    return ListTile(
-                      leading: RandomAvatar(
-                        item.author.id.toString(),
-                        height: 50,
-                        width: 52,
-                      ),
-                      title: Text(item.author.name),
-                      subtitle: Text(item.content),
+                    return TilePost(
+                      item: item,
                     );
                   } else {
                     return Padding(

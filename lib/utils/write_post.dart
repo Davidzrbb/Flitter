@@ -5,7 +5,8 @@ import 'dart:io';
 
 import '../models/write_post.dart';
 import '../services/post_bloc/post_bloc.dart';
-import 'image_picker_screen.dart';
+import 'image_picker.dart';
+
 
 class WritePostScreen extends StatelessWidget {
   const WritePostScreen({super.key});

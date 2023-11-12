@@ -1,7 +1,6 @@
-import 'package:flitter/screens/post_list_screen.dart';
-import 'package:flitter/screens/write_post_screen.dart';
+import 'package:flitter/utils/post_list.dart';
+import 'package:flitter/utils/write_post.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
