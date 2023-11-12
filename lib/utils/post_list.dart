@@ -6,7 +6,7 @@ import 'package:flitter/utils/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/post_get_bloc/post_get_bloc.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'delete_post_icon.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({Key? key}) : super(key: key);
@@ -17,19 +17,15 @@ class PostListScreen extends StatefulWidget {
 
 class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
-  StreamSubscription<PostGetState>? _postBlocSubscription;
-  List<Item> allItem = <Item>[];
-  bool hasMore = true;
-  int page = 1;
-  final limit = 12;
+
 
   @override
   void initState() {
     super.initState();
-    getAll();
+    _getAll();
     _controller.addListener(() {
       if (_controller.offset == _controller.position.maxScrollExtent) {
-        getAll();
+        _getAll();
       }
     });
   }
@@ -37,14 +33,13 @@ class _PostListScreenState extends State<PostListScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _postBlocSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: refresh,
+      onRefresh: _refresh,
       child: BlocBuilder<PostGetBloc, PostGetState>(
         builder: (context, state) {
           switch (state.status) {
@@ -55,109 +50,91 @@ class _PostListScreenState extends State<PostListScreen> {
                 child: Text(state.error.toString()),
               );
             case PostGetStatus.success:
-              return ListView.separated(
-                controller: _controller,
-                itemCount: allItem.length + 1,
-                separatorBuilder: (context, _) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 1,
-                    color: Colors.grey.shade300,
+              if (state.items == null) {
+                return const SizedBox();
+              } else {
+                return ListView.separated(
+                  controller: _controller,
+                  itemCount: state.items!.length + 1,
+                  separatorBuilder: (context, _) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey.shade300,
+                    ),
                   ),
-                ),
-                itemBuilder: (context, index) {
-                  if (index < allItem.length) {
-                    final item = allItem[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TilePost(
-                          item: item,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 8.0),
-                          child: BlocBuilder<ConnexionBloc, ConnexionState>(
-                            builder: (context, stateConnexion) {
-                              if (stateConnexion.user?.id == item.author.id) {
-                                return const Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Icon(
-                                      Icons.comment_outlined,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
-                                    Icon(
-                                      Icons.edit_outlined,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
-                                    Icon(
-                                      Icons.delete_outlined,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return const Icon(
-                                  Icons.comment_outlined,
-                                  color: Colors.grey,
-                                  size: 20,
-                                );
-                              }
-                            },
+                  itemBuilder: (context, index) {
+                    if (index < state.items!.length) {
+                      final item = state.items![index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TilePost(
+                            item: item,
                           ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30.0, vertical: 8.0),
+                            child: BlocBuilder<ConnexionBloc, ConnexionState>(
+                              builder: (context, stateConnexion) {
+                                if (stateConnexion.user?.id == item.author.id) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Icon(
+                                        Icons.comment_outlined,
+                                        color: Colors.grey,
+                                        size: 20,
+                                      ),
+                                      const Icon(
+                                        Icons.edit_outlined,
+                                        color: Colors.grey,
+                                        size: 20,
+                                      ),
+                                      DeletePostIcon(
+                                        id: item.id,
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return const Icon(
+                                    Icons.comment_outlined,
+                                    color: Colors.grey,
+                                    size: 20,
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32.0),
+                        child: Center(
+                          child: state.hasMore ?? false
+                              ? const CircularProgressIndicator()
+                              : const Text('Il n y a plus de posts !'),
                         ),
-                      ],
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 32.0),
-                      child: Center(
-                        child: hasMore
-                            ? const CircularProgressIndicator()
-                            : const Text('Il n y a plus de posts !'),
-                      ),
-                    );
-                  }
-                },
-              );
+                      );
+                    }
+                  },
+                );
+              }
           }
         },
       ),
     );
   }
 
-  Future<void> refresh() async {
-    setState(() {
-      allItem.clear();
-      page = 1;
-      hasMore = true;
-    });
-    await getAll();
+  Future<void> _refresh() async {
+    final productsBloc = BlocProvider.of<PostGetBloc>(context);
+    productsBloc.add(PostGetAll(true));
   }
 
-  Future<void> getAll() async {
+  Future<void> _getAll() async {
     final productsBloc = BlocProvider.of<PostGetBloc>(context);
-    _postBlocSubscription?.cancel();
-    _postBlocSubscription = productsBloc.stream.listen((state) {
-      if (state.status == PostGetStatus.success) {
-        setState(() {
-          page += 1;
-          final posts = state.posts;
-          if (posts != null && posts.items.isEmpty) {
-            hasMore = false;
-          }
-          if (posts != null && posts.items.isNotEmpty) {
-            allItem.addAll(
-                posts.items.where((element) => !allItem.contains(element)));
-          }
-        });
-      }
-    });
-    productsBloc.add(PostGetAll(page, limit));
+    productsBloc.add(PostGetAll(false));
   }
 }

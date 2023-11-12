@@ -21,10 +21,36 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
-        final posts = await _doGetAll(token, event.page, event.perPage);
+        GetPost posts;
+        List<Item> allItem = [];
+        int page = 1;
+        bool hasMore = true;
+        if (event.refresh) {
+          page = 1;
+          posts = await _doGetAll(token, page, state.perPage);
+          allItem = posts.items;
+        } else {
+          if (state.page != null) {
+            page = state.page! + 1;
+          }
+          posts = await _doGetAll(token, page, state.perPage);
+          allItem = state.items ?? [];
+          for (var item in posts.items) {
+            if (!allItem.any((element) => element.id == item.id)) {
+              allItem.add(item);
+            }
+          }
+        }
+        if (posts.nextPage == null) {
+          hasMore = false;
+        }
         emit(state.copyWith(
           status: PostGetStatus.success,
           posts: posts,
+          items: allItem,
+          page: page,
+          perPage: state.perPage,
+          hasMore: hasMore,
         ));
       } else {
         emit(state.copyWith(
