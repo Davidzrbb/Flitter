@@ -4,6 +4,7 @@ enum PostGetStatus {
   initial,
   success,
   error,
+  loading,
 }
 
 final class PostGetState {

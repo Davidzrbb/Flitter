@@ -26,6 +26,7 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
         int page = 1;
         bool hasMore = true;
         if (event.refresh) {
+          emit(state.copyWith(status: PostGetStatus.loading));
           page = 1;
           posts = await _doGetAll(token, page, state.perPage);
           allItem = posts.items;

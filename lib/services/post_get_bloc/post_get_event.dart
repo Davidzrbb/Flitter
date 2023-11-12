@@ -5,5 +5,6 @@ abstract class PostGetEvent {}
 
 class PostGetAll extends PostGetEvent {
   final bool refresh;
-  PostGetAll(this.refresh);
+
+  PostGetAll({this.refresh = false});
 }

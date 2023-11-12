@@ -18,7 +18,6 @@ class PostListScreen extends StatefulWidget {
 class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
 
-
   @override
   void initState() {
     super.initState();
@@ -45,6 +44,10 @@ class _PostListScreenState extends State<PostListScreen> {
           switch (state.status) {
             case PostGetStatus.initial:
               return const SizedBox();
+            case PostGetStatus.loading:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             case PostGetStatus.error:
               return Center(
                 child: Text(state.error.toString()),
@@ -130,11 +133,11 @@ class _PostListScreenState extends State<PostListScreen> {
 
   Future<void> _refresh() async {
     final productsBloc = BlocProvider.of<PostGetBloc>(context);
-    productsBloc.add(PostGetAll(true));
+    productsBloc.add(PostGetAll(refresh: true));
   }
 
   Future<void> _getAll() async {
     final productsBloc = BlocProvider.of<PostGetBloc>(context);
-    productsBloc.add(PostGetAll(false));
+    productsBloc.add(PostGetAll());
   }
 }
