@@ -62,15 +62,11 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
   }
 
   Future pickImages() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() {
-        BlocProvider.of<PostBloc>(context).add(PostImagePicked(imageTemp));
-      });
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+    final imageTemp = File(image.path);
+    setState(() {
+      BlocProvider.of<PostBloc>(context).add(PostImagePicked(imageTemp));
+    });
   }
 }

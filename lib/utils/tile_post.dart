@@ -4,8 +4,6 @@ import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:random_avatar/random_avatar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:shimmer/shimmer.dart';
 
 class TilePost extends StatelessWidget {
   const TilePost({
@@ -23,7 +21,7 @@ class TilePost extends StatelessWidget {
         height: 50,
         width: 52,
       ),
-      title: Text(item.author.name),
+      title: Text(item.author.name, style: const TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
@@ -43,7 +41,6 @@ class TilePost extends StatelessWidget {
         DateFormat('dd/MM à HH:mm', 'fr_FR').format(
           DateTime.fromMillisecondsSinceEpoch(item.createdAt),
         ),
-        /*image*/
       ),
     );
   }

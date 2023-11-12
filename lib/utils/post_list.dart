@@ -1,4 +1,5 @@
 import 'package:flitter/models/get_post.dart';
+import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/utils/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,8 +74,50 @@ class _PostListScreenState extends State<PostListScreen> {
                 itemBuilder: (context, index) {
                   if (index < allItem.length) {
                     final item = allItem[index];
-                    return TilePost(
-                      item: item,
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TilePost(
+                          item: item,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 8.0),
+                          child: BlocBuilder<ConnexionBloc, ConnexionState>(
+                            builder: (context, stateConnexion) {
+                              if (stateConnexion.user?.id == item.author.id) {
+                                return const Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.comment_outlined,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                    Icon(
+                                      Icons.edit_outlined,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                    Icon(
+                                      Icons.delete_outlined,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return const Icon(
+                                  Icons.comment_outlined,
+                                  color: Colors.grey,
+                                  size: 20,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   } else {
                     return Padding(

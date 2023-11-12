@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class VoirPlusString extends StatelessWidget {
-  const VoirPlusString({super.key,required this.content});
+  const VoirPlusString({super.key, required this.content});
 
   final String content;
 
@@ -18,6 +18,7 @@ class VoirPlusString extends StatelessWidget {
             child: Text(
               '$content ...',
               overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.black),
             ),
           ),
           TextButton(
@@ -36,7 +37,10 @@ class VoirPlusString extends StatelessWidget {
         ],
       );
     } else {
-      return Text(content);
+      return Text(
+        content,
+        style: const TextStyle(color: Colors.black),
+      );
     }
   }
 }
