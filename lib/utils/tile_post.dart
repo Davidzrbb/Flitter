@@ -1,4 +1,5 @@
 import 'package:flitter/models/get_post.dart';
+import 'package:flitter/utils/date_formater_get_timestamp.dart';
 import 'package:flitter/utils/shimmer_image_url.dart';
 import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class TilePost extends StatelessWidget {
         height: 50,
         width: 52,
       ),
-      title: Text(item.author.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      title: Text(item.author.name,
+          style: const TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(
@@ -37,11 +39,7 @@ class TilePost extends StatelessWidget {
           ],
         ),
       ),
-      trailing: Text(
-        DateFormat('dd/MM à HH:mm', 'fr_FR').format(
-          DateTime.fromMillisecondsSinceEpoch(item.createdAt),
-        ),
-      ),
+      trailing: DateFormatGetTimestamp(timestamp: item.createdAt),
     );
   }
 }

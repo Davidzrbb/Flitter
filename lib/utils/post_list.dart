@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flitter/models/get_post.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/utils/tile_post.dart';
@@ -15,7 +17,7 @@ class PostListScreen extends StatefulWidget {
 
 class _PostListScreenState extends State<PostListScreen> {
   final ScrollController _controller = ScrollController();
-
+  StreamSubscription<PostGetState>? _postBlocSubscription;
   List<Item> allItem = <Item>[];
   bool hasMore = true;
   int page = 1;
@@ -35,12 +37,12 @@ class _PostListScreenState extends State<PostListScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _postBlocSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('fr_FR', null);
     return RefreshIndicator(
       onRefresh: refresh,
       child: BlocBuilder<PostGetBloc, PostGetState>(
@@ -53,14 +55,6 @@ class _PostListScreenState extends State<PostListScreen> {
                 child: Text(state.error.toString()),
               );
             case PostGetStatus.success:
-              final posts = state.posts;
-              if (posts != null && posts.items.isNotEmpty) {
-                allItem.addAll(
-                    posts.items.where((element) => !allItem.contains(element)));
-              }
-              if (posts != null && posts.items.isEmpty) {
-                hasMore = false;
-              }
               return ListView.separated(
                 controller: _controller,
                 itemCount: allItem.length + 1,
@@ -139,16 +133,31 @@ class _PostListScreenState extends State<PostListScreen> {
 
   Future<void> refresh() async {
     setState(() {
-      page = 1;
       allItem.clear();
+      page = 1;
+      hasMore = true;
     });
+    await getAll();
   }
 
-  getAll() {
-    setState(() {
-      final productsBloc = BlocProvider.of<PostGetBloc>(context);
-      productsBloc.add(PostGetAll(page, limit));
-      page += 1;
+  Future<void> getAll() async {
+    final productsBloc = BlocProvider.of<PostGetBloc>(context);
+    _postBlocSubscription?.cancel();
+    _postBlocSubscription = productsBloc.stream.listen((state) {
+      if (state.status == PostGetStatus.success) {
+        setState(() {
+          page += 1;
+          final posts = state.posts;
+          if (posts != null && posts.items.isEmpty) {
+            hasMore = false;
+          }
+          if (posts != null && posts.items.isNotEmpty) {
+            allItem.addAll(
+                posts.items.where((element) => !allItem.contains(element)));
+          }
+        });
+      }
     });
+    productsBloc.add(PostGetAll(page, limit));
   }
 }
