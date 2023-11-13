@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flitter/models/get_post.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
+import 'package:flitter/utils/edit_post.dart';
 import 'package:flitter/utils/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +69,7 @@ class _PostListScreenState extends State<PostListScreen> {
                   ),
                   itemBuilder: (context, index) {
                     if (index < state.items!.length) {
-                      final item = state.items![index];
+                      Item item = state.items![index];
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -89,10 +91,25 @@ class _PostListScreenState extends State<PostListScreen> {
                                         color: Colors.grey,
                                         size: 20,
                                       ),
-                                      const Icon(
-                                        Icons.edit_outlined,
-                                        color: Colors.grey,
-                                        size: 20,
+                                      FloatingActionButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return EditPostScreen(
+                                                item: item,
+                                              );
+                                            },
+                                          );
+                                        },
+                                        elevation: 0,
+                                        backgroundColor: Colors.transparent,
+                                        child: const Icon(
+                                          Icons.edit_outlined,
+                                          color: Colors.grey,
+                                          size: 20,
+                                        ),
                                       ),
                                       DeletePostIcon(
                                         id: item.id,

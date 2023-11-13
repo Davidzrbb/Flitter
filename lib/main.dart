@@ -4,6 +4,7 @@ import 'package:flitter/services/inscription_bloc/inscription_bloc.dart';
 import 'package:flitter/services/post_bloc/post_bloc.dart';
 import 'package:flitter/services/post_delete_bloc/post_delete_bloc.dart';
 import 'package:flitter/services/post_get_bloc/post_get_bloc.dart';
+import 'package:flitter/services/post_patch_bloc/post_patch_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<PostDeleteBloc>(
             create: (context) => PostDeleteBloc(),
+          ),
+          BlocProvider<PostPatchBloc>(
+            create: (context) => PostPatchBloc(),
           ),
         ],
         child: MaterialApp.router(

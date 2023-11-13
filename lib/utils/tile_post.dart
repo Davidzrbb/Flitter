@@ -3,7 +3,6 @@ import 'package:flitter/utils/date_formater_get_timestamp.dart';
 import 'package:flitter/utils/shimmer_image_url.dart';
 import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 class TilePost extends StatelessWidget {
