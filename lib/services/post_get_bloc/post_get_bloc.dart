@@ -21,30 +21,24 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
+        int page = 1;
         GetPost posts;
         List<Item> allItem = [];
-        int page = 1;
-        bool hasMore = true;
+
         if (event.refresh) {
           emit(state.copyWith(status: PostGetStatus.loading));
-          page = 1;
           posts = await _doGetAll(token, page, state.perPage);
           allItem = posts.items;
         } else {
-          if (state.page != null) {
-            page = state.page! + 1;
-          }
+          page = state.page != null ? state.page! + 1 : page;
           posts = await _doGetAll(token, page, state.perPage);
           allItem = state.items ?? [];
-          for (var item in posts.items) {
-            if (!allItem.any((element) => element.id == item.id)) {
-              allItem.add(item);
-            }
-          }
+          allItem.addAll(posts.items.where((item) =>
+          !allItem.any((element) => element.id == item.id)));
         }
-        if (posts.nextPage == null) {
-          hasMore = false;
-        }
+
+        bool hasMore = posts.nextPage != null;
+
         emit(state.copyWith(
           status: PostGetStatus.success,
           posts: posts,
@@ -66,6 +60,7 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
       ));
     }
   }
+
 
   Future<GetPost> _doGetAll(String token, int? page, int? perPage) async {
     final dio = Dio(

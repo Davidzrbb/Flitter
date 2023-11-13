@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flitter/models/get_post.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/utils/tile_post.dart';
 import 'package:flutter/material.dart';

@@ -61,7 +61,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
         context: context,
         state: state,
-        child: const HomeScreen(),
+        child: HomeScreen(),
       ),
     ),
   ],

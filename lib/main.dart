@@ -1,8 +1,8 @@
-import 'package:flitter/models/get_post.dart';
 import 'package:flitter/router/go_router.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/services/inscription_bloc/inscription_bloc.dart';
 import 'package:flitter/services/post_bloc/post_bloc.dart';
+import 'package:flitter/services/post_delete_bloc/post_delete_bloc.dart';
 import 'package:flitter/services/post_get_bloc/post_get_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<PostGetBloc>(
             create: (context) => PostGetBloc(),
-          )
+          ),
+          BlocProvider<PostDeleteBloc>(
+            create: (context) => PostDeleteBloc(),
+          ),
         ],
         child: MaterialApp.router(
           title: 'Flitter',
