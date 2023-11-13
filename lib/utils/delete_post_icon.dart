@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/post_delete_bloc/post_delete_bloc.dart';
 import '../services/post_get_bloc/post_get_bloc.dart';
 
-class DeletePostIcon extends StatelessWidget {
+class DeletePostIcon extends StatefulWidget {
   const DeletePostIcon({Key? key, required this.id}) : super(key: key);
 
   final int id;
 
+  @override
+  State<DeletePostIcon> createState() => _DeletePostIconState();
+}
+
+class _DeletePostIconState extends State<DeletePostIcon> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -20,41 +25,26 @@ class DeletePostIcon extends StatelessWidget {
     );
   }
 
-  Future<void> _onDeleted(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text("Confirmation"),
-          content: const Text("Êtes-vous sûr de vouloir supprimer ce post ?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (Navigator.of(context).canPop()) {
-                  Navigator.of(context, rootNavigator: true).pop();
-                }
-              },
-              child: const Text("Annuler"),
-            ),
-            TextButton(
-              onPressed: () => _onDeletedBloc(context),
-              child:
-                  const Text("Supprimer", style: TextStyle(color: Colors.red)),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  _onDeleted(BuildContext context) async {
+    if (!mounted) {
+      // The widget is no longer in the widget tree, so don't proceed
+      return;
+    }
 
-  void _onDeletedBloc(BuildContext context) {
-    BlocProvider.of<PostDeleteBloc>(context).add(PostDelete(id));
+    BlocProvider.of<PostDeleteBloc>(context).add(PostDelete(widget.id));
     BlocProvider.of<PostDeleteBloc>(context).stream.listen((state) {
-      if (state.status == PostDeleteStatus.success ||
-          state.status == PostDeleteStatus.error) {
-        BlocProvider.of<PostGetBloc>(context)
-            .add(PostGetAll(refresh: true));
-        Navigator.of(context).pop();
+      if (!mounted) {
+        return;
+      }
+
+      if (state.status == PostDeleteStatus.success) {
+        BlocProvider.of<PostGetBloc>(context).add(PostGetAll(refresh: true));
+         ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Post supprimé'),
+          duration: Duration(seconds: 3),
+        ),
+      );
       }
     });
   }
