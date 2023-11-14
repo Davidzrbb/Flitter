@@ -108,7 +108,7 @@ class _DisplayCommentState extends State<DisplayComment> {
                 }
               } else {
                 return const Center(
-                  child: Text('No post found'),
+                  child: Text('Erreur avec le post ...'),
                 );
               }
           }
