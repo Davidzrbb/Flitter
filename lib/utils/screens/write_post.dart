@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:io';
 
-import '../models/write_post.dart';
-import '../services/post_bloc/post_bloc.dart';
-import 'image_picker.dart';
+import '../../models/write_post.dart';
+import '../../services/post_bloc/post_bloc.dart';
+import '../image_picker.dart';
 
 class WritePostScreen extends StatefulWidget {
   const WritePostScreen({super.key});

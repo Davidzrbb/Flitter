@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flitter/models/get_post.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
-import 'package:flitter/utils/edit_post.dart';
-import 'package:flitter/utils/tile_post.dart';
+import 'package:flitter/utils/icons/edit_post.dart';
+import 'package:flitter/utils/screens/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../services/post_get_bloc/post_get_bloc.dart';
-import 'delete_post_icon.dart';
+import '../../services/post_get_bloc/post_get_bloc.dart';
+import '../icons/comment_icon.dart';
+import '../icons/delete_post_icon.dart';
+import '../icons/icons_is_me.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({Key? key}) : super(key: key);
@@ -81,45 +83,10 @@ class _PostListScreenState extends State<PostListScreen> {
                                 horizontal: 30.0, vertical: 8.0),
                             child: BlocBuilder<ConnexionBloc, ConnexionState>(
                               builder: (context, stateConnexion) {
-                                Widget commentIcon = const Icon(
-                                  Icons.comment_outlined,
-                                  color: Colors.grey,
-                                  size: 20,
-                                );
-
                                 if (stateConnexion.user?.id == item.author.id) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      commentIcon,
-                                      FloatingActionButton(
-                                        onPressed: () {
-                                          showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return EditPostScreen(
-                                                item: item,
-                                              );
-                                            },
-                                          );
-                                        },
-                                        elevation: 0,
-                                        backgroundColor: Colors.transparent,
-                                        child: const Icon(
-                                          Icons.edit_outlined,
-                                          color: Colors.grey,
-                                          size: 20,
-                                        ),
-                                      ),
-                                      DeletePostIcon(
-                                        id: item.id,
-                                      ),
-                                    ],
-                                  );
+                                  return IconsIsMe(item: item);
                                 }
-                                return commentIcon;
+                                return CommentIcon(item: item);
                               },
                             ),
                           ),

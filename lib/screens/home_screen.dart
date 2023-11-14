@@ -1,5 +1,5 @@
-import 'package:flitter/utils/post_list.dart';
-import 'package:flitter/utils/write_post.dart';
+import 'package:flitter/utils/screens/post_list.dart';
+import 'package:flitter/utils/screens/write_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
