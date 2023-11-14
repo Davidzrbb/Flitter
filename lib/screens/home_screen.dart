@@ -29,6 +29,7 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
         child: FloatingActionButton(
+          heroTag: 'addPost',
           onPressed: () {
             showModalBottomSheet(
               isScrollControlled: true,

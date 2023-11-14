@@ -11,8 +11,7 @@ class EditCommentIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      /*remove padding and marge*/
-      heroTag: 'edit',
+      heroTag: 'editComment${comment.id}',
       onPressed: () {
         showModalBottomSheet(
           isScrollControlled: true,

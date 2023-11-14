@@ -10,24 +10,23 @@ enum CommentPatchStatus {
 final class CommentPatchState {
   final CommentPatchStatus? status;
   final Object? error;
+  final int? postId;
 
   const CommentPatchState({
     this.status = CommentPatchStatus.initial,
     this.error,
+    this.postId,
   });
-
-  factory CommentPatchState.initial() => const CommentPatchState(
-        status: CommentPatchStatus.initial,
-        error: '',
-      );
 
   CommentPatchState copyWith({
     CommentPatchStatus? status,
     Object? error,
+    int? postId,
   }) {
     return CommentPatchState(
       status: status ?? this.status,
       error: error ?? this.error,
+      postId: postId ?? this.postId,
     );
   }
 }

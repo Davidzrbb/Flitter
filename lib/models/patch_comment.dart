@@ -1,5 +1,5 @@
 class CommentPatchModel {
-  final String? id;
+  final int? id;
   final String? comment;
 
   const CommentPatchModel({
