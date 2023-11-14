@@ -20,6 +20,12 @@ class _WritePostScreenState extends State<WritePostScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<PostBloc>(context).add(PostImagePicked(null));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,

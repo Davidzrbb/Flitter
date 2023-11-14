@@ -17,7 +17,7 @@ class IconsIsMe extends StatelessWidget {
       children: [
         CommentIcon(item: item),
         FloatingActionButton(
-          heroTag: 'edit',
+          heroTag: 'edit${item.id}',
           onPressed: () {
             showModalBottomSheet(
               isScrollControlled: true,
