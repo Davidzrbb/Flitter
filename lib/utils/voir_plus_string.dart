@@ -11,17 +11,21 @@ class VoirPlusString extends StatelessWidget {
   }
 
   _showMore(String content, BuildContext context) {
-    if (content.length > 15) {
+    if (content.trim().length > 15) {
       return Row(
         children: [
-          Expanded(
-            child: Text(
-              '$content ...',
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.black),
-            ),
+          Text(
+            '${content.substring(0, 15)}...',
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: Colors.black),
           ),
           TextButton(
+            //remove the button's padding and margin because it's inside a row
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             onPressed: () {
               showDialog(
                 context: context,

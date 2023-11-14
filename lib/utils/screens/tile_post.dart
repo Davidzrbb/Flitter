@@ -31,14 +31,14 @@ class TilePost extends StatelessWidget {
             VoirPlusString(content: item.content),
             if (item.image != null)
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 12.0),
                 child: ShimmerImageUrl(
                     url: item.image!.url, width: 200, height: 200),
               )
           ],
         ),
       ),
-      trailing: DateFormatGetTimestamp(timestamp: item.createdAt),
+      trailing: DateFormatGetTimestamp(timestamp: item.createdAt, fontSize: 12),
     );
   }
 }

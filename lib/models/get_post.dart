@@ -21,7 +21,6 @@ class GetPost {
 
   factory GetPost.fromJson(Map<String, dynamic> json) {
     List<Item> itemsList = [];
-
     if (json['items'] != null) {
       var itemsArray = json['items'] as List;
       itemsList = itemsArray
