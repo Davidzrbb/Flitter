@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../services/connexion_bloc/connexion_bloc.dart';
 import '../icons/comment/delete_comment_icon.dart';
+import '../icons/comment/icons_is_me_comment.dart';
 
 class DisplayComment extends StatefulWidget {
   const DisplayComment({super.key, required this.state});
@@ -107,18 +109,17 @@ class _DisplayCommentState extends State<DisplayComment> {
                                 TileComment(
                                   comment: state.post!.comments[index],
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    EditCommentIcon(
-                                      comment: state.post!.comments[index],
-                                    ),
-                                    DeleteCommentIcon(
-                                      idPost: state.post!.id,
-                                      id: state.post!.comments[index].id,
-                                    ),
-                                  ],
+                                BlocBuilder<ConnexionBloc, ConnexionState>(
+                                  builder: (context, stateConnexion) {
+                                    if (stateConnexion.user?.id ==
+                                        state.post!.comments[index].author.id) {
+                                      return IconIsMeComment(
+                                        comment: state.post!.comments[index],
+                                        postId: postId,
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  },
                                 ),
                               ],
                             );

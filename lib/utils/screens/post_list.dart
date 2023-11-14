@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/post_get_bloc/post_get_bloc.dart';
 import '../icons/post/comment_icon.dart';
-import '../icons/post/icons_is_me.dart';
+import '../icons/post/icons_is_me_post.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({Key? key}) : super(key: key);
