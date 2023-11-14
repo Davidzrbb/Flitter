@@ -1,4 +1,5 @@
 import 'package:flitter/router/go_router.dart';
+import 'package:flitter/services/comment_delete_bloc/comment_delete_bloc.dart';
 import 'package:flitter/services/comment_patch_bloc/comment_patch_bloc.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
 import 'package:flitter/services/get_comment/get_comment_bloc.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<CommentPatchBloc>(
             create: (context) => CommentPatchBloc(),
+          ),
+          BlocProvider<CommentDeleteBloc>(
+            create: (context) => CommentDeleteBloc(),
           ),
         ],
         child: MaterialApp.router(

@@ -87,6 +87,7 @@ class _DisplayCommentState extends State<DisplayComment> {
                                       comment: state.post!.comments[index],
                                     ),
                                     DeleteCommentIcon(
+                                      idPost: state.post!.id,
                                       id: state.post!.comments[index].id,
                                     ),
                                   ],
