@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/get_post.dart';
 import 'delete_post_icon.dart';
-import 'edit_post.dart';
+import '../../screens/edit_post.dart';
 
 class IconsIsMe extends StatelessWidget {
   const IconsIsMe({super.key, required this.item});

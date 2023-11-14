@@ -1,12 +1,12 @@
 import 'package:flitter/services/get_comment/get_comment_bloc.dart';
+import 'package:flitter/utils/icons/comment/edit_comment_icon.dart';
+import 'package:flitter/utils/screens/tile_comment.dart';
 import 'package:flitter/utils/screens/tile_post.dart';
-import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:random_avatar/random_avatar.dart';
 
-import '../date_formater_get_timestamp.dart';
+import '../icons/comment/delete_comment_icon.dart';
 
 class DisplayComment extends StatefulWidget {
   const DisplayComment({super.key, required this.state});
@@ -67,40 +67,33 @@ class _DisplayCommentState extends State<DisplayComment> {
                       ),
                       Expanded(
                         flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 5.0),
-                          child: ListView.separated(
-                            separatorBuilder: (context, _) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 1,
-                                color: Colors.grey.shade300,
-                              ),
-                            ),
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: RandomAvatar(
-                                  state.post!.comments[index].author.id
-                                      .toString(),
-                                  height: 30,
-                                  width: 30,
-                                ),
-                                title: Text(
-                                    state.post!.comments[index].author.name),
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 12.0),
-                                  child: VoirPlusString(
-                                      content:
-                                          state.post!.comments[index].content),
-                                ),
-                                trailing: DateFormatGetTimestamp(
-                                    timestamp:
-                                        state.post!.comments[index].createdAt,
-                                    fontSize: 11),
-                              );
-                            },
-                            itemCount: state.post!.comments.length,
+                        child: ListView.separated(
+                          itemCount: state.post!.comments.length,
+                          separatorBuilder: (context, _) => Container(
+                            height: 1,
+                            color: Colors.grey.shade300,
                           ),
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                TileComment(
+                                  comment: state.post!.comments[index],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    EditCommentIcon(
+                                      comment: state.post!.comments[index],
+                                    ),
+                                    DeleteCommentIcon(
+                                      id: state.post!.comments[index].id,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ],
