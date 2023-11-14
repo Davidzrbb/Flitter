@@ -2,6 +2,7 @@ import 'package:flitter/services/get_comment/get_comment_bloc.dart';
 import 'package:flitter/utils/icons/comment/edit_comment_icon.dart';
 import 'package:flitter/utils/screens/tile_comment.dart';
 import 'package:flitter/utils/screens/tile_post.dart';
+import 'package:flitter/utils/screens/write_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,11 +25,38 @@ class _DisplayCommentState extends State<DisplayComment> {
     super.initState();
   }
 
+  int get postId {
+    final postIdString = widget.state.pathParameters['postId'];
+    return postIdString != null
+        ? int.parse(postIdString)
+        : 0; // or another default value
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Display Comment'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+        child: FloatingActionButton(
+          heroTag: 'addComment',
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return WriteComment(
+                  postId: postId,
+                );
+              },
+            );
+          },
+          backgroundColor: Colors.blue,
+          child: const Icon(Icons.comment_outlined),
+        ),
       ),
       body: BlocBuilder<GetCommentBloc, GetCommentState>(
         builder: (context, state) {
@@ -112,10 +140,7 @@ class _DisplayCommentState extends State<DisplayComment> {
   }
 
   _getCommentByIdPost() {
-    final postId = widget.state.pathParameters['postId'];
-    if (postId != null) {
-      final productsBloc = BlocProvider.of<GetCommentBloc>(context);
-      productsBloc.add(GetComment(int.parse(postId)));
-    }
+    final productsBloc = BlocProvider.of<GetCommentBloc>(context);
+    productsBloc.add(GetComment(postId));
   }
 }

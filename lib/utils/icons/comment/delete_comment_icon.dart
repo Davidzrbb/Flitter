@@ -38,7 +38,8 @@ class DeleteCommentIcon extends StatelessWidget {
           },
           child: AlertDialog(
             title: const Text("Confirmation"),
-            content: const Text("Êtes-vous sûr de vouloir supprimer ce commentaire ?"),
+            content: const Text(
+                "Êtes-vous sûr de vouloir supprimer ce commentaire ?"),
             actions: [
               TextButton(
                 onPressed: () {
