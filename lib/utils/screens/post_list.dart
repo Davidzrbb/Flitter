@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flitter/models/get_post.dart';
 import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
-import 'package:flitter/utils/icons/edit_post.dart';
 import 'package:flitter/utils/screens/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/post_get_bloc/post_get_bloc.dart';
-import '../icons/comment_icon.dart';
-import '../icons/delete_post_icon.dart';
-import '../icons/icons_is_me.dart';
+import '../icons/post/comment_icon.dart';
+import '../icons/post/icons_is_me.dart';
 
 class PostListScreen extends StatefulWidget {
   const PostListScreen({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/post_delete_bloc/post_delete_bloc.dart';
-import '../../services/post_get_bloc/post_get_bloc.dart';
+import '../../../services/post_delete_bloc/post_delete_bloc.dart';
+import '../../../services/post_get_bloc/post_get_bloc.dart';
 
 class DeletePostIcon extends StatelessWidget {
   const DeletePostIcon({Key? key, required this.id}) : super(key: key);

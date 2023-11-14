@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../models/get_post.dart';
+import '../../../models/get_post.dart';
 
 class CommentIcon extends StatelessWidget {
   const CommentIcon({super.key, required this.item});
