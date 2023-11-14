@@ -81,16 +81,18 @@ class _PostListScreenState extends State<PostListScreen> {
                                 horizontal: 30.0, vertical: 8.0),
                             child: BlocBuilder<ConnexionBloc, ConnexionState>(
                               builder: (context, stateConnexion) {
+                                Widget commentIcon = const Icon(
+                                  Icons.comment_outlined,
+                                  color: Colors.grey,
+                                  size: 20,
+                                );
+
                                 if (stateConnexion.user?.id == item.author.id) {
                                   return Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Icon(
-                                        Icons.comment_outlined,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ),
+                                      commentIcon,
                                       FloatingActionButton(
                                         onPressed: () {
                                           showModalBottomSheet(
@@ -116,13 +118,8 @@ class _PostListScreenState extends State<PostListScreen> {
                                       ),
                                     ],
                                   );
-                                } else {
-                                  return const Icon(
-                                    Icons.comment_outlined,
-                                    color: Colors.grey,
-                                    size: 20,
-                                  );
                                 }
+                                return commentIcon;
                               },
                             ),
                           ),
