@@ -7,6 +7,7 @@ import 'dart:io';
 
 import '../../models/write_post.dart';
 import '../../services/post_bloc/post_bloc.dart';
+import '../../services/post_get_bloc/post_get_bloc.dart';
 import '../image_picker.dart';
 
 class EditPostScreen extends StatefulWidget {
@@ -110,6 +111,9 @@ class _EditPostScreen extends State<EditPostScreen> {
                       bloc: BlocProvider.of<PostPatchBloc>(context),
                       listener: (BuildContext context, PostPatchState state) {
                         if (state.status == PostPatchStatus.success) {
+                          final productsBloc =
+                          BlocProvider.of<PostGetBloc>(context);
+                          productsBloc.add(PostGetAll(refresh: true));
                           Navigator.pop(context);
                           _showSuccessMessage(context);
                         }
@@ -153,7 +157,7 @@ class _EditPostScreen extends State<EditPostScreen> {
   void _showSuccessMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Votre post a été publié avec succès.'),
+        content: Text('Votre post a été modifié avec succès.'),
         backgroundColor: Colors.green,
         duration: Duration(
             seconds: 3), // Durée pendant laquelle le message sera affiché

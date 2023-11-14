@@ -5,6 +5,7 @@ import 'dart:io';
 
 import '../../models/write_post.dart';
 import '../../services/post_bloc/post_bloc.dart';
+import '../../services/post_get_bloc/post_get_bloc.dart';
 import '../image_picker.dart';
 
 class WritePostScreen extends StatefulWidget {
@@ -86,6 +87,9 @@ class _WritePostScreenState extends State<WritePostScreen> {
                       listener: (BuildContext context, PostState state) {
                         if (state.status == PostStatus.success) {
                           Navigator.pop(context);
+                          final productsBloc =
+                              BlocProvider.of<PostGetBloc>(context);
+                          productsBloc.add(PostGetAll(refresh: true));
                           showSuccessMessage(context);
                         }
                       },
