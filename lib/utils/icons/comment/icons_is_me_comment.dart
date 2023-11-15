@@ -1,8 +1,11 @@
 import 'package:flitter/models/comment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'delete_comment_icon.dart';
-import 'edit_comment_icon.dart';
+import '../../../services/comment_delete_bloc/comment_delete_bloc.dart';
+import '../../screens/edit_comment.dart';
+import '../delete_icon.dart';
+import '../edit_icon.dart';
 
 class IconIsMeComment extends StatelessWidget {
   const IconIsMeComment(
@@ -16,12 +19,28 @@ class IconIsMeComment extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        EditCommentIcon(
-          comment: comment,
-        ),
-        DeleteCommentIcon(
-          idPost: postId,
+        EditIcon(
           id: comment.id,
+          fontSize: 15,
+          onEdited: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return EditComment(
+                  comment: comment,
+                );
+              },
+            );
+          },
+        ),
+        DeleteIcon(
+          idPost: postId,
+          fontSize: 15,
+          onDeleted: () {
+            BlocProvider.of<CommentDeleteBloc>(context)
+                .add(CommentDelete(comment.id));
+          },
         ),
       ],
     );

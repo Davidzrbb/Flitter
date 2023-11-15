@@ -1,8 +1,12 @@
-import 'package:flitter/utils/icons/post/comment_icon.dart';
+import 'package:flitter/utils/icons/comment_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../models/get_post.dart';
-import 'delete_post_icon.dart';
+import '../../../services/post_delete_bloc/post_delete_bloc.dart';
+import '../../../services/post_get_bloc/post_get_bloc.dart';
+import '../edit_icon.dart';
+import '../delete_icon.dart';
 import '../../screens/edit_post.dart';
 
 class IconsIsMe extends StatelessWidget {
@@ -16,9 +20,10 @@ class IconsIsMe extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         CommentIcon(item: item),
-        FloatingActionButton(
-          heroTag: 'edit${item.id}',
-          onPressed: () {
+        EditIcon(
+          id: item.id,
+          fontSize: 20,
+          onEdited: () {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
@@ -29,16 +34,13 @@ class IconsIsMe extends StatelessWidget {
               },
             );
           },
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: const Icon(
-            Icons.edit_outlined,
-            color: Colors.grey,
-            size: 20,
-          ),
         ),
-        DeletePostIcon(
-          id: item.id,
+        DeleteIcon(
+          idPost: item.id,
+          fontSize: 20,
+          onDeleted: () {
+            BlocProvider.of<PostDeleteBloc>(context).add(PostDelete(item.id));
+          },
         ),
       ],
     );

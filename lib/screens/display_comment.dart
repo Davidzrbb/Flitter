@@ -1,15 +1,11 @@
 import 'package:flitter/services/get_comment/get_comment_bloc.dart';
-import 'package:flitter/utils/icons/comment/edit_comment_icon.dart';
 import 'package:flitter/utils/screens/tile_comment.dart';
 import 'package:flitter/utils/screens/tile_post.dart';
 import 'package:flitter/utils/screens/write_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../services/connexion_bloc/connexion_bloc.dart';
-import '../utils/check_user_is_logIn.dart';
-import '../utils/icons/comment/delete_comment_icon.dart';
 import '../utils/icons/comment/icons_is_me_comment.dart';
 
 class DisplayComment extends StatefulWidget {
