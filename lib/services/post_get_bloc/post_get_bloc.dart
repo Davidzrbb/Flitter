@@ -19,40 +19,32 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
 
   void _onPostGetAll(PostGetAll event, Emitter<PostGetState> emit) async {
     try {
-      final token = await _storage.read(key: 'authToken');
-      if (token != null) {
-        int page = 1;
-        GetPost posts;
-        List<Item> allItem = [];
+      int page = 1;
+      GetPost posts;
+      List<Item> allItem = [];
 
-        if (event.refresh) {
-          emit(state.copyWith(status: PostGetStatus.loading));
-          posts = await _doGetAll(token, page, state.perPage);
-          allItem = posts.items;
-        } else {
-          page = state.page != null ? state.page! + 1 : page;
-          posts = await _doGetAll(token, page, state.perPage);
-          allItem = state.items ?? [];
-          allItem.addAll(posts.items.where((item) =>
-          !allItem.any((element) => element.id == item.id)));
-        }
-
-        bool hasMore = posts.nextPage != null;
-
-        emit(state.copyWith(
-          status: PostGetStatus.success,
-          posts: posts,
-          items: allItem,
-          page: page,
-          perPage: state.perPage,
-          hasMore: hasMore,
-        ));
+      if (event.refresh) {
+        emit(state.copyWith(status: PostGetStatus.loading));
+        posts = await _doGetAll(page, state.perPage);
+        allItem = posts.items;
       } else {
-        emit(state.copyWith(
-          status: PostGetStatus.error,
-          error: 'Vous devez être connecté pour voir les posts',
-        ));
+        page = state.page != null ? state.page! + 1 : page;
+        posts = await _doGetAll(page, state.perPage);
+        allItem = state.items ?? [];
+        allItem.addAll(posts.items
+            .where((item) => !allItem.any((element) => element.id == item.id)));
       }
+
+      bool hasMore = posts.nextPage != null;
+
+      emit(state.copyWith(
+        status: PostGetStatus.success,
+        posts: posts,
+        items: allItem,
+        page: page,
+        perPage: state.perPage,
+        hasMore: hasMore,
+      ));
     } catch (error) {
       emit(state.copyWith(
         status: PostGetStatus.error,
@@ -61,8 +53,7 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
     }
   }
 
-
-  Future<GetPost> _doGetAll(String token, int? page, int? perPage) async {
+  Future<GetPost> _doGetAll(int? page, int? perPage) async {
     final dio = Dio(
       BaseOptions(
         baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
@@ -74,11 +65,6 @@ class PostGetBloc extends Bloc<PostGetEvent, PostGetState> {
         'page': page,
         'per_page': perPage,
       },
-      options: Options(
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      ),
     );
     return GetPost.fromJson(response.data as Map<String, dynamic>);
   }

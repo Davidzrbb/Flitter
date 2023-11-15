@@ -1,6 +1,7 @@
 import 'package:flitter/screens/connexion_screen.dart';
 import 'package:flitter/screens/home_screen.dart';
 import 'package:flitter/screens/inscription_screen.dart';
+import 'package:flitter/utils/check_user_is_logIn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
         context: context,
         state: state,
-        child: ConnexionScreen(),
+        child: HomeScreen(),
       ),
     ),
     GoRoute(
@@ -71,7 +72,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
         context: context,
         state: state,
-        child: DisplayComment(state: state),
+        child: CheckUserIsLogIn(child: DisplayComment(state: state)),
       ),
     )
   ],

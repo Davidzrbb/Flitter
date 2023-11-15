@@ -30,7 +30,7 @@ final class ConnexionState {
       status: status ?? this.status,
       connexion: connexion ?? this.connexion,
       error: error ?? this.error,
-      user: user ?? this.user,
+      user: user,
     );
   }
 }

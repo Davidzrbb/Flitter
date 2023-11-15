@@ -19,9 +19,20 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Flitter'),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: (() => _signOut(context)),
+          BlocBuilder<ConnexionBloc, ConnexionState>(
+            builder: (context, state) {
+              if (state.user != null) {
+                return IconButton(
+                  icon: const Icon(Icons.power_off_outlined),
+                  onPressed: (() => _signOut(context)),
+                );
+              } else {
+                return IconButton(
+                  icon: const Icon(Icons.power),
+                  onPressed: (() => context.go('/sign_in')),
+                );
+              }
+            },
           ),
         ],
       ),
@@ -50,6 +61,5 @@ class HomeScreen extends StatelessWidget {
   void _signOut(BuildContext context) {
     final connexionBloc = BlocProvider.of<ConnexionBloc>(context);
     connexionBloc.add(Disconnected());
-    context.go('/');
   }
 }

@@ -30,7 +30,7 @@ class GetCommentBloc extends Bloc<GetCommentEvent, GetCommentState> {
       } else {
         emit(state.copyWith(
           status: GetCommentStatus.error,
-          error: 'Vous devez être connecté pour voir les posts',
+          error: 'Vous devez être connecté pour voir les commentaires',
         ));
       }
     } catch (error) {

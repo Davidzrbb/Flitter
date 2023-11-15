@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../services/connexion_bloc/connexion_bloc.dart';
+import '../check_user_is_logIn.dart';
 import '../icons/comment/delete_comment_icon.dart';
 import '../icons/comment/icons_is_me_comment.dart';
 

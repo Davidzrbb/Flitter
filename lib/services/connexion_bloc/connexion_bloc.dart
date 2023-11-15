@@ -13,6 +13,7 @@ part 'connexion_state.dart';
 
 class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
   final _storage = const FlutterSecureStorage();
+
   ConnexionBloc() : super(ConnexionState()) {
     on<ConnexionSubmitted>(_onConnexionSubmitted);
     on<IsConnected>(_onIsConnected);
@@ -74,11 +75,13 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
       await _storage.delete(key: 'authToken');
       emit(state.copyWith(
         status: ConnexionStatus.success,
+        user: null
       ));
     } catch (error) {
       emit(state.copyWith(
         status: ConnexionStatus.error,
         error: error,
+          user: null
       ));
     }
   }
@@ -107,9 +110,6 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
       ),
     );
 
-    Map<String, dynamic> data = {
-      'authToken': token,
-    };
     Response<dynamic> response = await dio
         .get('/auth/me',
             options: Options(headers: {
