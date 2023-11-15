@@ -88,6 +88,14 @@ class InscriptionScreen extends StatelessWidget {
                     }
                   },
                 ),
+                BlocListener<InscriptionBloc, InscriptionState>(
+                  listener: (context, state) {
+                    if (state.status == InscriptionStatus.success) {
+                      context.go('/sign_in');
+                    }
+                  },
+                  child: const SizedBox(),
+                ),
                 TextButton(
                   onPressed: () => context.go('/sign_in'),
                   child: const Text('You have an account? Sign In.'),

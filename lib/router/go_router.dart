@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../services/connexion_bloc/connexion_bloc.dart';
-import '../utils/screens/display_comment.dart';
+import '../screens/display_comment.dart';
 
 CustomTransitionPage buildPageWithDefaultTransition<T>({
   required BuildContext context,

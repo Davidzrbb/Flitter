@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../services/connexion_bloc/connexion_bloc.dart';
-import '../check_user_is_logIn.dart';
-import '../icons/comment/delete_comment_icon.dart';
-import '../icons/comment/icons_is_me_comment.dart';
+import '../services/connexion_bloc/connexion_bloc.dart';
+import '../utils/check_user_is_logIn.dart';
+import '../utils/icons/comment/delete_comment_icon.dart';
+import '../utils/icons/comment/icons_is_me_comment.dart';
 
 class DisplayComment extends StatefulWidget {
   const DisplayComment({super.key, required this.state});
