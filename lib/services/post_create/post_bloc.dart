@@ -20,7 +20,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   void _onPostImagePicked(PostImagePicked event, Emitter<PostState> emit) {
-    emit(state.copyWith(imageBase64: event.image, status: PostStatus.loading));
+    emit(state.copyWith(imageBase64: event.image, status: PostStatus.loadingImage));
   }
 
   void _onPostSubmitted(PostSubmitted event, Emitter<PostState> emit) async {

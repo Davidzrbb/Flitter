@@ -3,6 +3,7 @@ part of 'post_bloc.dart';
 enum PostStatus {
   initial,
   loading,
+  loadingImage,
   success,
   error,
 }

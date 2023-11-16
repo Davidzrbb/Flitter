@@ -18,10 +18,10 @@ class CommentPatchBloc extends Bloc<CommentPatchEvent, CommentPatchState> {
 
   void _onCommentPatch(
       CommentPatch event, Emitter<CommentPatchState> emit) async {
-    emit(state.copyWith(status: CommentPatchStatus.loading));
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
+        emit(state.copyWith(status: CommentPatchStatus.loading));
         int postId = await _doPatch(event.commentPatchModel, token);
         emit(state.copyWith(
           status: CommentPatchStatus.success,

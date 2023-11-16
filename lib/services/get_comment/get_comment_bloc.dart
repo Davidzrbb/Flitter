@@ -18,10 +18,10 @@ class GetCommentBloc extends Bloc<GetCommentEvent, GetCommentState> {
   }
 
   _getAllComment(GetComment event, Emitter<GetCommentState> emit) async {
-    emit(state.copyWith(status: GetCommentStatus.loading));
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
+        emit(state.copyWith(status: GetCommentStatus.loading));
         Post post = await _doGetAll(event.postId, token);
         emit(state.copyWith(
           status: GetCommentStatus.success,
