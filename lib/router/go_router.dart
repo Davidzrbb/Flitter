@@ -5,8 +5,7 @@ import 'package:flitter/utils/check_user_is_logIn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../services/connexion_bloc/connexion_bloc.dart';
+import '../services/connexion/connexion_bloc.dart';
 import '../screens/display_comment.dart';
 
 CustomTransitionPage buildPageWithDefaultTransition<T>({
