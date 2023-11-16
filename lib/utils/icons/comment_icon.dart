@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../models/get_post.dart';
 
 class CommentIcon extends StatelessWidget {
-  const CommentIcon({super.key, required this.item});
+  const CommentIcon({super.key, required this.item,
+    required this.onTap,
+  });
 
   final Item item;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.pushNamed('display_comment', pathParameters: {
-          'postId': item.id.toString(),
-        });
+        onTap();
       },
       child: Row(
         children: [

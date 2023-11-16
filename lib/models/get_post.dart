@@ -44,7 +44,7 @@ class GetPost {
 class Item {
   final int id;
   final int createdAt;
-  final String content;
+  final String? content;
   final Image? image;
   final Author author;
   final int commentsCount;

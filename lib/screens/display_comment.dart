@@ -1,12 +1,13 @@
 import 'package:flitter/services/get_comment/get_comment_bloc.dart';
-import 'package:flitter/utils/screens/tile_comment.dart';
-import 'package:flitter/utils/screens/tile_post.dart';
-import 'package:flitter/utils/screens/write_comment.dart';
+import 'package:flitter/utils/ui/tile_comment.dart';
+import 'package:flitter/utils/ui/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../services/connexion_bloc/connexion_bloc.dart';
+import '../services/comment_post/comment_post_bloc.dart';
+import '../services/connexion/connexion_bloc.dart';
 import '../utils/icons/comment/icons_is_me_comment.dart';
+import '../utils/ui/floating_action_button_screen.dart';
 
 class DisplayComment extends StatefulWidget {
   const DisplayComment({super.key, required this.state});
@@ -47,8 +48,19 @@ class _DisplayCommentState extends State<DisplayComment> {
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return WriteComment(
-                  postId: postId,
+                return FloatingActionButtonScreen(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      final postBloc =
+                          BlocProvider.of<CommentPostBloc>(context);
+                      postBloc.add(CommentPostSubmitted(
+                        comment: textFieldController.text,
+                        postId: postId,
+                      ));
+                    }
+                  },
+                  url: null,
+                  content: null,
                 );
               },
             );

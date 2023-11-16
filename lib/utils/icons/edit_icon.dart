@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../models/comment.dart';
-import '../screens/edit_comment.dart';
-
 class EditIcon extends StatelessWidget {
   const EditIcon({
     super.key,

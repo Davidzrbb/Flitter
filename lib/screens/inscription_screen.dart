@@ -1,8 +1,9 @@
 import 'package:flitter/models/inscription_user.dart';
-import 'package:flitter/services/inscription_bloc/inscription_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../services/inscription/inscription_bloc.dart';
 
 class InscriptionScreen extends StatelessWidget {
   InscriptionScreen({Key? key}) : super(key: key);

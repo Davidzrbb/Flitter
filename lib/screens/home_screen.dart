@@ -1,10 +1,11 @@
-import 'package:flitter/utils/screens/post_list.dart';
-import 'package:flitter/utils/screens/write_post.dart';
+import 'package:flitter/utils/ui/post_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../services/connexion_bloc/connexion_bloc.dart';
+import '../models/write_post.dart';
+import '../services/connexion/connexion_bloc.dart';
+import '../services/post_create/post_bloc.dart';
+import '../utils/ui/floating_action_button_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -43,12 +44,31 @@ class HomeScreen extends StatelessWidget {
           heroTag: 'addPost',
           onPressed: () {
             showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (BuildContext context) {
-                return const WritePostScreen();
-              },
-            );
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return BlocBuilder<PostBloc, PostState>(
+                    builder: (context, state) {
+                      return FloatingActionButtonScreen(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            BlocProvider.of<PostBloc>(context).add(
+                              PostSubmitted(
+                                WritePost(
+                                  content: textFieldController.text,
+                                  imageBase64: state.imageBase64,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        url: null,
+                        content: null,
+                        imagePicker: true,
+                      );
+                    },
+                  );
+                });
           },
           backgroundColor: Colors.blue,
           child: const Icon(Icons.add),

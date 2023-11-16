@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/comment_delete_bloc/comment_delete_bloc.dart';
+import '../../services/comment_delete/comment_delete_bloc.dart';
 import '../../services/get_comment/get_comment_bloc.dart';
-import '../../services/post_delete_bloc/post_delete_bloc.dart';
-import '../../services/post_get_bloc/post_get_bloc.dart';
+import '../../services/post_delete/post_delete_bloc.dart';
+import '../../services/post_get/post_get_bloc.dart';
+
 
 class DeleteIcon extends StatelessWidget {
   const DeleteIcon({

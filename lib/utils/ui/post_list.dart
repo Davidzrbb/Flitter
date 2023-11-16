@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flitter/models/get_post.dart';
-import 'package:flitter/services/connexion_bloc/connexion_bloc.dart';
-import 'package:flitter/utils/screens/tile_post.dart';
+import 'package:flitter/utils/ui/tile_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/post_get_bloc/post_get_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../services/connexion/connexion_bloc.dart';
+import '../../services/post_get/post_get_bloc.dart';
 import '../icons/comment_icon.dart';
 import '../icons/post/icons_is_me_post.dart';
 
@@ -84,7 +85,14 @@ class _PostListScreenState extends State<PostListScreen> {
                                 if (stateConnexion.user?.id == item.author.id) {
                                   return IconsIsMe(item: item);
                                 }
-                                return CommentIcon(item: item);
+                                return CommentIcon(
+                                    item: item,
+                                    onTap: () {
+                                      context.pushNamed('display_comment',
+                                          pathParameters: {
+                                            'postId': item.id.toString(),
+                                          });
+                                    });
                               },
                             ),
                           ),

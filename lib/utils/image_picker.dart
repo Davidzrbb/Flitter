@@ -1,13 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flitter/utils/shimmer_image_url.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../services/post_bloc/post_bloc.dart';
+import '../services/post_create/post_bloc.dart';
 
 class ImagePickerScreen extends StatefulWidget {
   const ImagePickerScreen({Key? key}) : super(key: key);
@@ -36,7 +33,8 @@ class _ImagePickerScreenState extends State<ImagePickerScreen> {
                   // This will show the image on the screen
                   SizedBox(
                     width: 150,
-                    child: !state.imageBase64!.path.contains('https://xoc1-kd2t-7p9b.n7c.xano.io')
+                    child: !state.imageBase64!.path
+                            .contains('https://xoc1-kd2t-7p9b.n7c.xano.io')
                         ? Image.file(File(state.imageBase64!.path))
                         : ShimmerImageUrl(
                             url: state.imageBase64!.path,
