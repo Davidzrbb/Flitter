@@ -217,8 +217,7 @@ class _FloatingActionButtonScreenState
       const SnackBar(
         content: Text('Mise à jour réussie !'),
         backgroundColor: Colors.green,
-        duration: Duration(
-            seconds: 3), // Durée pendant laquelle le message sera affiché
+        duration: Duration(seconds: 3),
       ),
     );
   }
@@ -247,8 +246,7 @@ class _FloatingActionButtonScreenState
       SnackBar(
         content: Text(content ?? "erreur"),
         backgroundColor: Colors.red,
-        duration: const Duration(
-            seconds: 3), // Durée pendant laquelle le message sera affiché
+        duration: const Duration(seconds: 3),
       ),
     );
   }
