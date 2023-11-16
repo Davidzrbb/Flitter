@@ -82,14 +82,14 @@ class _FloatingActionButtonScreenState
             TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Veuillez écrire votre post';
+                  return 'Erreur : le champ est vide !';
                 }
                 return null;
               },
               controller: textFieldController,
               maxLines: 5,
               decoration: const InputDecoration(
-                hintText: 'Écrivez votre post ici...',
+                hintText: 'Quoi de neuf ?',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -102,84 +102,107 @@ class _FloatingActionButtonScreenState
                     ? const ImagePickerScreen()
                     : const SizedBox(),
                 const SizedBox(width: 16.0),
-                MultiBlocListener(
-                  listeners: [
-                    BlocListener(
-                      bloc: BlocProvider.of<PostBloc>(context),
-                      listener: (BuildContext context, PostState state) {
-                        if (state.status == PostStatus.success) {
-                          final productsBloc =
-                              BlocProvider.of<PostGetBloc>(context);
-                          productsBloc.add(PostGetAll(refresh: true));
-                          Navigator.pop(context);
-                          _showSuccessMessage(context);
-                        }
-                        if (state.status == PostStatus.error) {
-                          Navigator.pop(context);
-                          _showErrorMessage(context, state.error.toString());
-                        }
-                      },
+                Column(
+                  children: [
+                    MultiBlocListener(
+                      listeners: [
+                        BlocListener(
+                          bloc: BlocProvider.of<PostBloc>(context),
+                          listener: (BuildContext context, PostState state) {
+                            if (state.status == PostStatus.success) {
+                              final productsBloc =
+                                  BlocProvider.of<PostGetBloc>(context);
+                              productsBloc.add(PostGetAll(refresh: true));
+                              Navigator.pop(context);
+                              _showSuccessMessage(context);
+                            }
+                            if (state.status == PostStatus.error) {
+                              Navigator.pop(context);
+                              _showErrorMessage(
+                                  context, state.error.toString());
+                            }
+                          },
+                        ),
+                        BlocListener(
+                          bloc: BlocProvider.of<CommentPostBloc>(context),
+                          listener:
+                              (BuildContext context, CommentPostState state) {
+                            if (state.status == CommentPostStatus.success) {
+                              if (state.postId != null) {
+                                BlocProvider.of<GetCommentBloc>(context)
+                                    .add(GetComment(state.postId!));
+                              }
+                              BlocProvider.of<PostGetBloc>(context)
+                                  .add(PostGetAll(refresh: true));
+                              Navigator.of(context).pop();
+                              _showSuccessMessage(context);
+                            }
+                            if (state.status == CommentPostStatus.error) {
+                              Navigator.pop(context);
+                              _showErrorMessage(
+                                  context, state.error.toString());
+                            }
+                          },
+                        ),
+                        BlocListener(
+                          bloc: BlocProvider.of<PostPatchBloc>(context),
+                          listener:
+                              (BuildContext context, PostPatchState state) {
+                            if (state.status == PostPatchStatus.success) {
+                              final productsBloc =
+                                  BlocProvider.of<PostGetBloc>(context);
+                              productsBloc.add(PostGetAll(refresh: true));
+                              Navigator.pop(context);
+                              _showSuccessMessage(context);
+                            }
+                            if (state.status == PostPatchStatus.error) {
+                              Navigator.pop(context);
+                              _showErrorMessage(
+                                  context, state.error.toString());
+                            }
+                          },
+                        ),
+                        BlocListener(
+                          bloc: BlocProvider.of<CommentPatchBloc>(context),
+                          listener:
+                              (BuildContext context, CommentPatchState state) {
+                            if (state.status == CommentPatchStatus.success) {
+                              if (state.postId != null) {
+                                BlocProvider.of<GetCommentBloc>(context)
+                                    .add(GetComment(state.postId!));
+                              }
+                              Navigator.pop(context);
+                              _showSuccessMessage(context);
+                            }
+                            if (state.status == CommentPatchStatus.error) {
+                              Navigator.pop(context);
+                              _showErrorMessage(
+                                  context, state.error.toString());
+                            }
+                          },
+                        ),
+                      ],
+                      child: Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              widget.onPressed();
+                            },
+                            child: const Text('Publier'),
+                          ),
+                        ],
+                      ),
                     ),
-                    BlocListener(
-                      bloc: BlocProvider.of<CommentPostBloc>(context),
-                      listener: (BuildContext context, CommentPostState state) {
-                        if (state.status == CommentPostStatus.success) {
-                          if (state.postId != null) {
-                            BlocProvider.of<GetCommentBloc>(context)
-                                .add(GetComment(state.postId!));
-                          }
-                          BlocProvider.of<PostGetBloc>(context)
-                              .add(PostGetAll(refresh: true));
-                          Navigator.of(context).pop();
-                          _showSuccessMessage(context);
-                        }
-                        if (state.status == CommentPostStatus.error) {
-                          Navigator.pop(context);
-                          _showErrorMessage(context, state.error.toString());
-                        }
-                      },
-                    ),
-                    BlocListener(
-                      bloc: BlocProvider.of<PostPatchBloc>(context),
-                      listener: (BuildContext context, PostPatchState state) {
-                        if (state.status == PostPatchStatus.success) {
-                          final productsBloc =
-                              BlocProvider.of<PostGetBloc>(context);
-                          productsBloc.add(PostGetAll(refresh: true));
-                          Navigator.pop(context);
-                          _showSuccessMessage(context);
-                        }
-                        if (state.status == PostPatchStatus.error) {
-                          Navigator.pop(context);
-                          _showErrorMessage(context, state.error.toString());
-                        }
-                      },
-                    ),
-                    BlocListener(
-                      bloc: BlocProvider.of<CommentPatchBloc>(context),
-                      listener:
-                          (BuildContext context, CommentPatchState state) {
-                        if (state.status == CommentPatchStatus.success) {
-                          if (state.postId != null) {
-                            BlocProvider.of<GetCommentBloc>(context)
-                                .add(GetComment(state.postId!));
-                          }
-                          Navigator.pop(context);
-                          _showSuccessMessage(context);
-                        }
-                        if (state.status == CommentPatchStatus.error) {
-                          Navigator.pop(context);
-                          _showErrorMessage(context, state.error.toString());
-                        }
-                      },
-                    ),
+                    buildLoadingIndicator(BlocProvider.of<PostBloc>(context)),
+                    buildLoadingIndicator(
+                        BlocProvider.of<PostGetBloc>(context)),
+                    buildLoadingIndicator(
+                        BlocProvider.of<CommentPostBloc>(context)),
+                    buildLoadingIndicator(
+                        BlocProvider.of<CommentPatchBloc>(context)),
+                    buildLoadingIndicator(
+                        BlocProvider.of<PostPatchBloc>(context)),
                   ],
-                  child: ElevatedButton(
-                    onPressed: () {
-                      widget.onPressed();
-                    },
-                    child: const Text('Publier'),
-                  ),
                 ),
               ],
             ),
@@ -199,15 +222,34 @@ class _FloatingActionButtonScreenState
       ),
     );
   }
-}
 
-void _showErrorMessage(BuildContext context, String? content) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(content ?? "erreur"),
-      backgroundColor: Colors.red,
-      duration: const Duration(
-          seconds: 3), // Durée pendant laquelle le message sera affiché
-    ),
-  );
+  Widget buildLoadingIndicator(BlocBase bloc) {
+    return BlocBuilder<BlocBase, dynamic>(
+      bloc: bloc,
+      builder: (context, state) {
+        if (state.status == PostPatchStatus.loading ||
+            state.status == CommentPostStatus.loading ||
+            state.status == CommentPatchStatus.loading ||
+            (state.status == PostStatus.loading &&
+                state.imageBase64 == null &&
+                textFieldController.text.isNotEmpty)) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+
+  void _showErrorMessage(BuildContext context, String? content) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(content ?? "erreur"),
+        backgroundColor: Colors.red,
+        duration: const Duration(
+            seconds: 3), // Durée pendant laquelle le message sera affiché
+      ),
+    );
+  }
 }
