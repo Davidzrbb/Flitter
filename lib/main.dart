@@ -3,7 +3,7 @@ import 'package:flitter/services/comment_delete/comment_delete_bloc.dart';
 import 'package:flitter/services/comment_patch/comment_patch_bloc.dart';
 import 'package:flitter/services/comment_post/comment_post_bloc.dart';
 import 'package:flitter/services/connexion/connexion_bloc.dart';
-import 'package:flitter/services/get_comment/get_comment_bloc.dart';
+import 'package:flitter/services/comment_get/get_comment_bloc.dart';
 import 'package:flitter/services/inscription/inscription_bloc.dart';
 import 'package:flitter/services/post_create/post_bloc.dart';
 import 'package:flitter/services/post_delete/post_delete_bloc.dart';

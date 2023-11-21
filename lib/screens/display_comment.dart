@@ -1,4 +1,4 @@
-import 'package:flitter/services/get_comment/get_comment_bloc.dart';
+import 'package:flitter/services/comment_get/get_comment_bloc.dart';
 import 'package:flitter/utils/ui/tile_comment.dart';
 import 'package:flitter/utils/ui/tile_post.dart';
 import 'package:flutter/material.dart';

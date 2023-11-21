@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/comment_delete/comment_delete_bloc.dart';
-import '../../services/get_comment/get_comment_bloc.dart';
+import '../../services/comment_get/get_comment_bloc.dart';
 import '../../services/post_delete/post_delete_bloc.dart';
 import '../../services/post_get/post_get_bloc.dart';
 
