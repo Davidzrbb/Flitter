@@ -1,6 +1,5 @@
 part of 'post_delete_bloc.dart';
 
-@immutable
 abstract class PostDeleteEvent {}
 
 class PostDelete extends PostDeleteEvent {

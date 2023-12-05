@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:meta/meta.dart';
+
+import '../post_get/post_get_bloc.dart';
 
 part 'post_delete_event.dart';
 
@@ -11,8 +12,9 @@ part 'post_delete_state.dart';
 
 class PostDeleteBloc extends Bloc<PostDeleteEvent, PostDeleteState> {
   final _storage = const FlutterSecureStorage();
+  final PostGetBloc postGetBloc;
 
-  PostDeleteBloc() : super(PostDeleteState()) {
+  PostDeleteBloc(this.postGetBloc) : super(PostDeleteState()) {
     on<PostDelete>(_onPostDelete);
   }
 
@@ -24,6 +26,7 @@ class PostDeleteBloc extends Bloc<PostDeleteEvent, PostDeleteState> {
         emit(state.copyWith(
           status: PostDeleteStatus.success,
         ));
+        postGetBloc.add(PostGetAll(refresh: true));
       } else {
         emit(state.copyWith(
           status: PostDeleteStatus.error,

@@ -49,13 +49,19 @@ class IconIsMeComment extends StatelessWidget {
             );
           },
         ),
-        DeleteIcon(
-          idPost: postId,
-          fontSize: 15,
-          onDeleted: () {
-            BlocProvider.of<CommentDeleteBloc>(context)
-                .add(CommentDelete(comment.id));
+        BlocListener<CommentDeleteBloc, CommentDeleteState>(
+          listener: (context, state) {
+            if (state.status == CommentDeleteStatus.success) {
+              Navigator.of(context).pop();
+            }
           },
+          child: DeleteIcon(
+            fontSize: 15,
+            onDeleted: () {
+              BlocProvider.of<CommentDeleteBloc>(context)
+                  .add(CommentDelete(comment.id));
+            },
+          ),
         ),
       ],
     );

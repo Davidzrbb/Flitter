@@ -36,7 +36,9 @@ class MyApp extends StatelessWidget {
             create: (context) => PostGetBloc(),
           ),
           BlocProvider<PostDeleteBloc>(
-            create: (context) => PostDeleteBloc(),
+            create: (context) => PostDeleteBloc(
+              BlocProvider.of<PostGetBloc>(context),
+            ),
           ),
           BlocProvider<PostPatchBloc>(
             create: (context) => PostPatchBloc(),
