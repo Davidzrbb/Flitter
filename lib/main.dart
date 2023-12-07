@@ -36,7 +36,9 @@ class MyApp extends StatelessWidget {
               create: (context) => InscriptionBloc(),
             ),
             BlocProvider<PostBloc>(
-              create: (context) => PostBloc(),
+              create: (context) => PostBloc(
+                postsRepository: context.read<PostsRepository>(),
+              ),
             ),
             BlocProvider<PostGetBloc>(
               create: (context) => PostGetBloc(
