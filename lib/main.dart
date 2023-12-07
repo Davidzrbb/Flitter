@@ -75,7 +75,9 @@ class MyApp extends StatelessWidget {
               create: (context) => CommentPatchBloc(),
             ),
             BlocProvider<CommentDeleteBloc>(
-              create: (context) => CommentDeleteBloc(),
+              create: (context) => CommentDeleteBloc(
+                commentsRepository: context.read<CommentsRepository>(),
+              ),
             ),
             BlocProvider<CommentPostBloc>(
               create: (context) => CommentPostBloc(),

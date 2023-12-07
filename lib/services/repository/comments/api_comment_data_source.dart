@@ -20,4 +20,25 @@ class ApiCommentDataSource extends CommentsDataSource {
     );
     return Post.fromJson(response.data as Map<String, dynamic>);
   }
+
+  @override
+  Future<void> deleteComment(int id, String token) {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
+      ),
+    );
+
+    return dio
+        .delete(
+          '/comment/$id',
+          options: Options(
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+            },
+          ),
+        )
+        .then((value) => true);
+  }
 }

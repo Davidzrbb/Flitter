@@ -11,4 +11,8 @@ class CommentsRepository {
   Future<Post> getAllComments(int postId, String token) async {
     return commentsDataSource.getAllComments(postId, token);
   }
+
+  Future<void> deleteComment(int id, String token) async {
+    return commentsDataSource.deleteComment(id, token);
+  }
 }
