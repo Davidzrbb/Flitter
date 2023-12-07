@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../models/connexion_user.dart';
-import 'package:dio/dio.dart';
+
 
 import '../../models/user.dart';
 import '../repository/auth/auth_repository.dart';

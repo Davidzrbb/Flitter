@@ -53,7 +53,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
             BlocProvider<InscriptionBloc>(
-              create: (context) => InscriptionBloc(),
+              create: (context) => InscriptionBloc(
+                authRepository: context.read<AuthRepository>(),
+              ),
             ),
             BlocProvider<PostBloc>(
               create: (context) => PostBloc(
