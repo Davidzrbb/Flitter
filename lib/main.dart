@@ -9,6 +9,8 @@ import 'package:flitter/services/post_create/post_bloc.dart';
 import 'package:flitter/services/post_delete/post_delete_bloc.dart';
 import 'package:flitter/services/post_get/post_get_bloc.dart';
 import 'package:flitter/services/post_patch/post_patch_bloc.dart';
+import 'package:flitter/services/repository/comments/api_comment_data_source.dart';
+import 'package:flitter/services/repository/comments/comments_repository.dart';
 import 'package:flitter/services/repository/posts/api_post_data_source.dart';
 import 'package:flitter/services/repository/posts/posts_repository.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => PostsRepository(
-        productsDataSource: ApiPostDataSource(),
-      ),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<PostsRepository>(
+          create: (context) => PostsRepository(
+            productsDataSource: ApiPostDataSource(),
+          ),
+        ),
+        RepositoryProvider<CommentsRepository>(
+          create: (context) => CommentsRepository(
+            commentsDataSource: ApiCommentDataSource(),
+          ),
+        ),
+      ],
       child: MultiBlocProvider(
           providers: [
             BlocProvider<ConnexionBloc>(
@@ -56,7 +67,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
             BlocProvider<GetCommentBloc>(
-              create: (context) => GetCommentBloc(),
+              create: (context) => GetCommentBloc(
+                commentsRepository: context.read<CommentsRepository>(),
+              ),
             ),
             BlocProvider<CommentPatchBloc>(
               create: (context) => CommentPatchBloc(),
