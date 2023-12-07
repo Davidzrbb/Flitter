@@ -6,6 +6,7 @@ import '../../models/connexion_user.dart';
 import 'package:dio/dio.dart';
 
 import '../../models/user.dart';
+import '../repository/auth/auth_repository.dart';
 
 part 'connexion_event.dart';
 
@@ -13,8 +14,9 @@ part 'connexion_state.dart';
 
 class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
   final _storage = const FlutterSecureStorage();
+  final AuthRepository authRepository;
 
-  ConnexionBloc() : super(ConnexionState()) {
+  ConnexionBloc({required this.authRepository}) : super(ConnexionState()) {
     on<ConnexionSubmitted>(_onConnexionSubmitted);
     on<IsConnected>(_onIsConnected);
     on<Disconnected>(_onDisconnected);
@@ -25,7 +27,7 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
     emit(state.copyWith(status: ConnexionStatus.loading));
 
     try {
-      final token = await _doConnexion(ConnexionUser(
+      final token = await authRepository.doConnexion(ConnexionUser(
           email: event.connexionUser.email,
           password: event.connexionUser.password));
 
@@ -73,34 +75,11 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
 
     try {
       await _storage.delete(key: 'authToken');
-      emit(state.copyWith(
-        status: ConnexionStatus.success,
-        user: null
-      ));
+      emit(state.copyWith(status: ConnexionStatus.success, user: null));
     } catch (error) {
       emit(state.copyWith(
-        status: ConnexionStatus.error,
-        error: error,
-          user: null
-      ));
+          status: ConnexionStatus.error, error: error, user: null));
     }
-  }
-
-  Future<String> _doConnexion(ConnexionUser connexionUser) async {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
-      ),
-    );
-
-    Map<String, dynamic> data = {
-      'email': connexionUser.email,
-      'password': connexionUser.password,
-    };
-    Response<dynamic> response = await dio
-        .post('/auth/login', data: data)
-        .catchError((error) => throw error.response.data['message']);
-    return response.data['authToken'];
   }
 
   Future<User> _doIsConnected(String token) async {

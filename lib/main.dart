@@ -9,6 +9,8 @@ import 'package:flitter/services/post_create/post_bloc.dart';
 import 'package:flitter/services/post_delete/post_delete_bloc.dart';
 import 'package:flitter/services/post_get/post_get_bloc.dart';
 import 'package:flitter/services/post_patch/post_patch_bloc.dart';
+import 'package:flitter/services/repository/auth/api_auth_data_source.dart';
+import 'package:flitter/services/repository/auth/auth_repository.dart';
 import 'package:flitter/services/repository/comments/api_comment_data_source.dart';
 import 'package:flitter/services/repository/comments/comments_repository.dart';
 import 'package:flitter/services/repository/posts/api_post_data_source.dart';
@@ -37,11 +39,18 @@ class MyApp extends StatelessWidget {
             commentsDataSource: ApiCommentDataSource(),
           ),
         ),
+        RepositoryProvider<AuthRepository>(
+          create: (context) => AuthRepository(
+            authDataSource: ApiAuthDataSource(),
+          ),
+        ),
       ],
       child: MultiBlocProvider(
           providers: [
             BlocProvider<ConnexionBloc>(
-              create: (context) => ConnexionBloc(),
+              create: (context) => ConnexionBloc(
+                authRepository: context.read<AuthRepository>(),
+              ),
             ),
             BlocProvider<InscriptionBloc>(
               create: (context) => InscriptionBloc(),
