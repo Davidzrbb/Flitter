@@ -1,7 +1,7 @@
 import 'package:flitter/services/repository/comments/comment_data_source.dart';
 
+import '../../../models/patch_comment.dart';
 import '../../../models/post.dart';
-
 
 class CommentsRepository {
   final CommentsDataSource commentsDataSource;
@@ -18,5 +18,10 @@ class CommentsRepository {
 
   Future<int> createComment(String comment, int postId, String token) async {
     return commentsDataSource.createComment(comment, postId, token);
+  }
+
+  Future<int> patchComment(
+      CommentPatchModel commentPatchModel, String token) async {
+    return commentsDataSource.patchComment(commentPatchModel, token);
   }
 }
