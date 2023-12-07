@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/comment_delete/comment_delete_bloc.dart';
-import '../../services/comment_get/get_comment_bloc.dart';
-import '../../services/post_delete/post_delete_bloc.dart';
-import '../../services/post_get/post_get_bloc.dart';
-
 
 class DeleteIcon extends StatelessWidget {
   const DeleteIcon({
     Key? key,
-    required this.idPost,
     required this.onDeleted,
     required this.fontSize,
   }) : super(key: key);
 
-  final int idPost;
   final VoidCallback onDeleted;
   final double fontSize;
 
@@ -34,47 +26,23 @@ class DeleteIcon extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        return MultiBlocListener(
-          listeners: [
-            BlocListener<PostDeleteBloc, PostDeleteState>(
-              listener: (context, state) {
-                if (state.status == PostDeleteStatus.success) {
-                  BlocProvider.of<PostGetBloc>(context)
-                      .add(PostGetAll(refresh: true));
-                  Navigator.of(context).pop();
-                }
+        return AlertDialog(
+          title: const Text("Confirmation"),
+          content: const Text("Êtes-vous sûr de vouloir supprimer ?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
               },
+              child: const Text("Annuler"),
             ),
-            BlocListener<CommentDeleteBloc, CommentDeleteState>(
-              listener: (context, state) {
-                if (state.status == CommentDeleteStatus.success) {
-                  BlocProvider.of<GetCommentBloc>(context)
-                      .add(GetComment(idPost));
-                  BlocProvider.of<PostGetBloc>(context)
-                      .add(PostGetAll(refresh: true));
-                  Navigator.of(context).pop();
-                }
+            TextButton(
+              onPressed: () {
+                onDeleted();
               },
+              child: const Text("Supprimer"),
             ),
           ],
-          child: AlertDialog(
-            title: const Text("Confirmation"),
-            content: const Text("Êtes-vous sûr de vouloir supprimer ?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Annuler"),
-              ),
-              TextButton(
-                onPressed: () {
-                  onDeleted();
-                },
-                child: const Text("Supprimer"),
-              ),
-            ],
-          ),
         );
       },
     );

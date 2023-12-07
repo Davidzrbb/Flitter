@@ -1,4 +1,6 @@
 import 'package:flitter/models/comment.dart';
+import 'package:flitter/services/comment_get/get_comment_bloc.dart';
+import 'package:flitter/services/post_get/post_get_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -49,13 +51,22 @@ class IconIsMeComment extends StatelessWidget {
             );
           },
         ),
-        DeleteIcon(
-          idPost: postId,
-          fontSize: 15,
-          onDeleted: () {
-            BlocProvider.of<CommentDeleteBloc>(context)
-                .add(CommentDelete(comment.id));
+        BlocListener<CommentDeleteBloc, CommentDeleteState>(
+          listener: (context, state) {
+            if (state.status == CommentDeleteStatus.success) {
+              BlocProvider.of<GetCommentBloc>(context).add(GetComment(postId));
+              BlocProvider.of<PostGetBloc>(context)
+                  .add(PostGetAll(refresh: true));
+              Navigator.of(context).pop();
+            }
           },
+          child: DeleteIcon(
+            fontSize: 15,
+            onDeleted: () {
+              BlocProvider.of<CommentDeleteBloc>(context)
+                  .add(CommentDelete(comment.id));
+            },
+          ),
         ),
       ],
     );

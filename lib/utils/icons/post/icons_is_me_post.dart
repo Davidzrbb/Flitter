@@ -8,6 +8,7 @@ import '../../../models/get_post.dart';
 import '../../../models/write_post.dart';
 import '../../../services/post_create/post_bloc.dart';
 import '../../../services/post_delete/post_delete_bloc.dart';
+import '../../../services/post_get/post_get_bloc.dart';
 import '../../../services/post_patch/post_patch_bloc.dart';
 import '../edit_icon.dart';
 import '../delete_icon.dart';
@@ -66,12 +67,20 @@ class IconsIsMe extends StatelessWidget {
             );
           },
         ),
-        DeleteIcon(
-          idPost: item.id,
-          fontSize: 20,
-          onDeleted: () {
-            BlocProvider.of<PostDeleteBloc>(context).add(PostDelete(item.id));
+        BlocListener<PostDeleteBloc, PostDeleteState>(
+          listener: (context, state) {
+            if (state.status == PostDeleteStatus.success) {
+              BlocProvider.of<PostGetBloc>(context)
+                  .add(PostGetAll(refresh: true));
+              Navigator.of(context).pop();
+            }
           },
+          child: DeleteIcon(
+            fontSize: 20,
+            onDeleted: () {
+              BlocProvider.of<PostDeleteBloc>(context).add(PostDelete(item.id));
+            },
+          ),
         ),
       ],
     );
