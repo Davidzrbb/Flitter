@@ -51,7 +51,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
             BlocProvider<PostPatchBloc>(
-              create: (context) => PostPatchBloc(),
+              create: (context) => PostPatchBloc(
+                postsRepository: context.read<PostsRepository>(),
+              ),
             ),
             BlocProvider<GetCommentBloc>(
               create: (context) => GetCommentBloc(),

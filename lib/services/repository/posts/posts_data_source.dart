@@ -8,4 +8,6 @@ abstract class PostsDataSource {
   Future<bool> createPost(WritePost writePost, String token);
 
   Future<void> deletePost(String id, String token);
+
+  Future<bool> patchPost(WritePost writePost, String token, int id);
 }

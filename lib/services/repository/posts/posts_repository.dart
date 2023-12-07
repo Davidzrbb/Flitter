@@ -16,6 +16,10 @@ class PostsRepository {
     return productsDataSource.createPost(writePost, token);
   }
 
+  Future<bool> patchPost(WritePost writePost, String token, int id) async {
+    return productsDataSource.patchPost(writePost, token, id);
+  }
+
   Future<void> deletePost(String id, String token) async {
     return productsDataSource.deletePost(id, token);
   }
