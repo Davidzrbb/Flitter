@@ -1,4 +1,5 @@
 import '../../../models/connexion_user.dart';
+import '../../../models/user.dart';
 import 'auth_data_source.dart';
 
 class AuthRepository {
@@ -8,5 +9,9 @@ class AuthRepository {
 
   Future<String> doConnexion(ConnexionUser connexionUser) async {
     return authDataSource.doConnexion(connexionUser);
+  }
+
+  Future<User> doIsConnected(String token) async {
+    return authDataSource.doIsConnected(token);
   }
 }

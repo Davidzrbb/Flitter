@@ -52,7 +52,7 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
     try {
       final token = await _storage.read(key: 'authToken');
       if (token != null) {
-        User user = await _doIsConnected(token);
+        User user = await authRepository.doIsConnected(token);
 
         emit(state.copyWith(
           status: ConnexionStatus.success,
@@ -80,22 +80,5 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
       emit(state.copyWith(
           status: ConnexionStatus.error, error: error, user: null));
     }
-  }
-
-  Future<User> _doIsConnected(String token) async {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
-      ),
-    );
-
-    Response<dynamic> response = await dio
-        .get('/auth/me',
-            options: Options(headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer $token",
-            }))
-        .catchError((error) => throw error.response.data['message']);
-    return User.fromJson(response.data);
   }
 }
