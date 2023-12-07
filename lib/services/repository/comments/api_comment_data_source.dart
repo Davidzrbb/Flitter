@@ -41,4 +41,31 @@ class ApiCommentDataSource extends CommentsDataSource {
         )
         .then((value) => true);
   }
+
+  @override
+  Future<int> createComment(String comment, int postId, String token) async {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
+      ),
+    );
+    Map<String, dynamic> data = {
+      'content': comment,
+      'post_id': postId,
+    };
+    Response<dynamic> response = await dio
+        .post(
+          '/comment',
+          data: data,
+          options: Options(
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+            },
+          ),
+        )
+        .catchError((error) => throw error.response.data['message']);
+
+    return response.data['post_id'];
+  }
 }

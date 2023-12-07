@@ -80,7 +80,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
             BlocProvider<CommentPostBloc>(
-              create: (context) => CommentPostBloc(),
+              create: (context) => CommentPostBloc(
+                commentsRepository: context.read<CommentsRepository>(),
+              ),
             ),
           ],
           child: MaterialApp.router(
