@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flitter/models/write_post.dart';
-import 'package:flitter/services/repository/product/posts_data_source.dart';
+import 'package:flitter/services/repository/posts/posts_data_source.dart';
 
 import '../../../models/get_post.dart';
 
@@ -60,5 +60,22 @@ class ApiPostDataSource extends PostsDataSource {
         )
         .catchError((error) => throw Exception(error));
     return true;
+  }
+
+  @override
+  Future<void> deletePost(String id, String token) async {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
+      ),
+    );
+    await dio.delete(
+      '/post/$id',
+      options: Options(
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      ),
+    );
   }
 }

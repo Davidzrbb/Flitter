@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flitter/models/get_post.dart';
-import '../repository/product/posts_repository.dart';
+import '../repository/posts/posts_repository.dart';
 
 part 'post_get_event.dart';
 

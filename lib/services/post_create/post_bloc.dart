@@ -1,13 +1,11 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:flitter/models/write_post.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../repository/product/posts_repository.dart';
+import '../repository/posts/posts_repository.dart';
 
 part 'post_event.dart';
 
@@ -53,44 +51,5 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         error: error,
       ));
     }
-  }
-
-  Future<bool> _doPost(WritePost writePost, String token) async {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi',
-      ),
-    );
-
-    FormData formData;
-
-    if (writePost.imageBase64 != null) {
-      String fileName = 'image.png';
-      formData = FormData.fromMap({
-        'base_64_image': await MultipartFile.fromFile(
-          writePost.imageBase64!.path,
-          filename: fileName,
-        ),
-        'content': writePost.content,
-      });
-    } else {
-      formData = FormData.fromMap({
-        'content': writePost.content,
-      });
-    }
-
-    await dio
-        .post(
-          '/post',
-          data: formData,
-          options: Options(
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Authorization": "Bearer $token",
-            },
-          ),
-        )
-        .catchError((error) => throw Exception(error));
-    return true;
   }
 }

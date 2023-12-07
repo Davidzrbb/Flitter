@@ -9,8 +9,8 @@ import 'package:flitter/services/post_create/post_bloc.dart';
 import 'package:flitter/services/post_delete/post_delete_bloc.dart';
 import 'package:flitter/services/post_get/post_get_bloc.dart';
 import 'package:flitter/services/post_patch/post_patch_bloc.dart';
-import 'package:flitter/services/repository/product/api_post_data_source.dart';
-import 'package:flitter/services/repository/product/posts_repository.dart';
+import 'package:flitter/services/repository/posts/api_post_data_source.dart';
+import 'package:flitter/services/repository/posts/posts_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<PostDeleteBloc>(
               create: (context) => PostDeleteBloc(
-                BlocProvider.of<PostGetBloc>(context),
+                postsRepository: context.read<PostsRepository>(),
               ),
             ),
             BlocProvider<PostPatchBloc>(

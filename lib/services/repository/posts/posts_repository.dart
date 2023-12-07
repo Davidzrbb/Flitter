@@ -1,5 +1,5 @@
 import 'package:flitter/models/get_post.dart';
-import 'package:flitter/services/repository/product/posts_data_source.dart';
+import 'package:flitter/services/repository/posts/posts_data_source.dart';
 
 import '../../../models/write_post.dart';
 
@@ -14,5 +14,9 @@ class PostsRepository {
 
   Future<bool> createPost(WritePost writePost, String token) async {
     return productsDataSource.createPost(writePost, token);
+  }
+
+  Future<void> deletePost(String id, String token) async {
+    return productsDataSource.deletePost(id, token);
   }
 }

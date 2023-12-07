@@ -70,6 +70,8 @@ class IconsIsMe extends StatelessWidget {
         BlocListener<PostDeleteBloc, PostDeleteState>(
           listener: (context, state) {
             if (state.status == PostDeleteStatus.success) {
+              BlocProvider.of<PostGetBloc>(context)
+                  .add(PostGetAll(refresh: true));
               Navigator.of(context).pop();
             }
           },
