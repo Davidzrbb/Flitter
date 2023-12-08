@@ -3,6 +3,7 @@ import 'package:flitter/utils/date_formater_get_timestamp.dart';
 import 'package:flitter/utils/shimmer_image_url.dart';
 import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 class TilePost extends StatelessWidget {
@@ -16,11 +17,17 @@ class TilePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: RandomAvatar(
-        item.author.id.toString(),
-        height: 50,
-        width: 52,
-      ),
+      leading: GestureDetector(
+          child: RandomAvatar(
+            item.author.id.toString(),
+            height: 50,
+            width: 52,
+          ),
+          onTap: () {
+            context.pushNamed('display_profile', pathParameters: {
+              'userId': item.author.id.toString(),
+            });
+          }),
       title: Text(item.author.name,
           style: const TextStyle(fontWeight: FontWeight.bold)),
       subtitle: Padding(

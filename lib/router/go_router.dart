@@ -1,6 +1,7 @@
 import 'package:flitter/screens/connexion_screen.dart';
 import 'package:flitter/screens/home_screen.dart';
 import 'package:flitter/screens/inscription_screen.dart';
+import 'package:flitter/screens/profile_screen.dart';
 import 'package:flitter/utils/check_user_is_logIn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,7 +74,16 @@ final GoRouter router = GoRouter(
         state: state,
         child: CheckUserIsLogIn(child: DisplayComment(state: state)),
       ),
-    )
+    ),
+    GoRoute(
+      path: '/display_profile/:userId',
+      name: 'display_profile',
+      pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+        context: context,
+        state: state,
+        child: ProfileScreen(state: state),
+      ),
+    ),
   ],
   redirect: (context, state) async {
     final connexionBloc = BlocProvider.of<ConnexionBloc>(context);
