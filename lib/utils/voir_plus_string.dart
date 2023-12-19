@@ -18,7 +18,7 @@ class VoirPlusString extends StatelessWidget {
       return Row(
         children: [
           Text(
-            '${content.substring(0, 15)}...',
+            '${content.substring(0, 15)}... ',
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.black),
           ),

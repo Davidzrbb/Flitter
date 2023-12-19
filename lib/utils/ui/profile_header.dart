@@ -1,4 +1,5 @@
 import 'package:flitter/models/get_post.dart';
+import 'package:flitter/models/get_profile.dart';
 import 'package:flitter/utils/date_formater_get_timestamp.dart';
 import 'package:flitter/utils/shimmer_image_url.dart';
 import 'package:flitter/utils/voir_plus_string.dart';
@@ -8,7 +9,10 @@ import 'package:random_avatar/random_avatar.dart';
 import 'dart:math' as math;
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  const ProfileHeader({super.key, required this.profile, required this.postNumber});
+
+  final GetProfile profile;
+  final int postNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,9 @@ class ProfileHeader extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              decoration: BoxDecoration(color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0)),
+              decoration: BoxDecoration(
+                  color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                      .withOpacity(1.0)),
             ),
           ),
           Expanded(
@@ -29,7 +35,7 @@ class ProfileHeader extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 60, left: 10),
                       child: Text(
-                        "UserName",
+                        this.profile.name,
                       ),
                     ),
                   ),
@@ -37,7 +43,7 @@ class ProfileHeader extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 60, right: 10),
                       child: Text(
-                        "X Post",
+                        "${this.postNumber.toString()} Posts",
                         textAlign: TextAlign.end,
                       ),
                     ),
@@ -53,7 +59,7 @@ class ProfileHeader extends StatelessWidget {
         child: Container(
           alignment: AlignmentDirectional.center,
           child: RandomAvatar(
-            "blabla",
+            this.profile.id.toString(),
             height: 100,
             width: 100,
           ),
