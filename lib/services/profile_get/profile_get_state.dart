@@ -1,63 +1,32 @@
 part of 'profile_get_bloc.dart';
 
-enum GetProfileInfoStatus {
-  initialInfo,
-  loadingInfo,
-  successInfo,
-  errorInfo,
-}
-
-enum GetProfilePostsStatus {
-  initialPosts,
-  loadingPosts,
-  successPosts,
-  errorPosts,
+enum ProfileGetStatus {
+  initial,
+  loading,
+  success,
+  error,
 }
 
 final class ProfileGetState {
-  final GetProfileInfoStatus statusProfileInfo;
-  final GetProfilePostsStatus statusProfilePosts;
+  final ProfileGetStatus status;
   final GetProfile? profile;
-  final GetProfilePosts? profilePosts;
   final Object? error;
-  final List<Item>? items;
-  final int? page;
-  final int perPage;
-  final bool? hasMore;
 
   ProfileGetState({
-    this.statusProfileInfo = GetProfileInfoStatus.initialInfo,
-    this.statusProfilePosts = GetProfilePostsStatus.initialPosts,
+    this.status = ProfileGetStatus.initial,
     this.profile,
-    this.profilePosts,
     this.error,
-    this.items,
-    this.page,
-    this.perPage = 12,
-    this.hasMore = true,
   });
 
   ProfileGetState copyWith({
-    GetProfileInfoStatus? statusInfo,
-    GetProfilePostsStatus? statusPosts,
+    ProfileGetStatus? status,
     GetProfile? profile,
-    GetProfilePosts? profilePosts,
     Object? error,
-    List<Item>? items,
-    int? page,
-    int? perPage,
-    bool? hasMore,
   }) {
     return ProfileGetState(
-      statusProfileInfo: statusInfo ?? this.statusProfileInfo,
-      statusProfilePosts: statusPosts ?? this.statusProfilePosts,
+      status: status ?? this.status,
       profile: profile ?? this.profile,
-      profilePosts: profilePosts ?? this.profilePosts,
       error: error ?? this.error,
-      items: items ?? this.items,
-      page: page ?? this.page,
-      perPage: perPage ?? this.perPage,
-      hasMore: hasMore ?? this.hasMore,
     );
   }
 }

@@ -226,15 +226,15 @@ class _FloatingActionButtonScreenState
     return BlocBuilder<BlocBase, dynamic>(
       bloc: bloc,
       builder: (context, state) {
-        if ((state.statusProfileInfo == PostStatus.loading &&
+        if ((state.status == PostStatus.loading &&
             state.imageBase64 == null &&
             textFieldController.text.isNotEmpty)) {
           print("toto");
         }
-        if (state.statusProfileInfo == PostPatchStatus.loading ||
-            state.statusProfileInfo == CommentPostStatus.loading ||
-            state.statusProfileInfo == CommentPatchStatus.loading ||
-            state.statusProfileInfo == PostStatus.loading) {
+        if (state.status == PostPatchStatus.loading ||
+            state.status == CommentPostStatus.loading ||
+            state.status == CommentPatchStatus.loading ||
+            state.status == PostStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );

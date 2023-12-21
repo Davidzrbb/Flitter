@@ -6,7 +6,7 @@ class GetProfilePosts {
   final int offset;
   final int itemsTotal;
   final int pageTotal;
-  final List<Item> items;
+  final List<ItemPostProfile> items;
 
   GetProfilePosts({
     required this.itemsReceived,
@@ -20,11 +20,11 @@ class GetProfilePosts {
   });
 
   factory GetProfilePosts.fromJson(Map<String, dynamic> json) {
-    List<Item> itemsList = [];
+    List<ItemPostProfile> itemsList = [];
     if (json['items'] != null) {
       var itemsArray = json['items'] as List;
       itemsList = itemsArray
-          .map((item) => Item.fromJson(item as Map<String, dynamic>))
+          .map((item) => ItemPostProfile.fromJson(item as Map<String, dynamic>))
           .toList();
     }
 
@@ -41,15 +41,15 @@ class GetProfilePosts {
   }
 }
 
-class Item {
+class ItemPostProfile {
   final int id;
   final int createdAt;
   final String? content;
   final int userId;
-  final Image? image;
+  final ImagePostProfile? image;
   final int commentsCount;
 
-  Item({
+  ItemPostProfile({
     required this.id,
     required this.createdAt,
     required this.content,
@@ -58,27 +58,27 @@ class Item {
     required this.commentsCount,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) {
-    return Item(
+  factory ItemPostProfile.fromJson(Map<String, dynamic> json) {
+    return ItemPostProfile(
       id: json['id'],
       createdAt: json['created_at'],
       content: json['content'],
       userId: json['user_id'],
-      image: json['image'] != null ? Image.fromJson(json['image']) : null,
+      image: json['image'] != null ? ImagePostProfile.fromJson(json['image']) : null,
       commentsCount: json['comments_count'],
     );
   }
 }
 
-class Image {
+class ImagePostProfile {
   final String url;
 
-  Image({
+  ImagePostProfile({
     required this.url,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) {
-    return Image(
+  factory ImagePostProfile.fromJson(Map<String, dynamic> json) {
+    return ImagePostProfile(
       url: json['url'],
     );
   }

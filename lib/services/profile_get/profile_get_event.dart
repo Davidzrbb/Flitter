@@ -9,11 +9,3 @@ class GetProfileInfo extends ProfileGetEvent {
   GetProfileInfo(this.userId);
 
 }
-
-class GetProfileAllPosts extends ProfileGetEvent {
-  final bool refresh;
-  final int userId;
-
-  GetProfileAllPosts(this.userId, {this.refresh = false});
-
-}

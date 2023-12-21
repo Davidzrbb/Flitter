@@ -26,7 +26,7 @@ class ApiProfileDataSource extends ProfileDataSource {
         baseUrl: 'https://xoc1-kd2t-7p9b.n7c.xano.io/api:xbcc5VEi'));
 
     final response = await dio.get(
-      '/user/$userId/posts',
+      '/user/$userId/posts?page=$page&per_page=$perPage',
     );
 
     return GetProfilePosts.fromJson(response.data as Map<String, dynamic>);

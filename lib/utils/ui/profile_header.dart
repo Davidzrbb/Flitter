@@ -28,7 +28,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(color: Colors.red),
+              decoration: BoxDecoration(color: Colors.blue),
               child: Row(
                 children: [
                   Expanded(

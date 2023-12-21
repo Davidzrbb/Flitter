@@ -9,6 +9,7 @@ import 'package:flitter/services/post_create/post_bloc.dart';
 import 'package:flitter/services/post_delete/post_delete_bloc.dart';
 import 'package:flitter/services/post_get/post_get_bloc.dart';
 import 'package:flitter/services/post_patch/post_patch_bloc.dart';
+import 'package:flitter/services/post_profile_get/post_profile_get_bloc.dart';
 import 'package:flitter/services/profile_get/profile_get_bloc.dart';
 import 'package:flitter/services/repository/auth/api_auth_data_source.dart';
 import 'package:flitter/services/repository/auth/auth_repository.dart';
@@ -16,6 +17,7 @@ import 'package:flitter/services/repository/comments/api_comment_data_source.dar
 import 'package:flitter/services/repository/comments/comments_repository.dart';
 import 'package:flitter/services/repository/posts/api_post_data_source.dart';
 import 'package:flitter/services/repository/posts/posts_repository.dart';
+import 'package:flitter/services/repository/profile/api_profile_data_source.dart';
 import 'package:flitter/services/repository/profile/profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +46,11 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<AuthRepository>(
           create: (context) => AuthRepository(
             authDataSource: ApiAuthDataSource(),
+          ),
+        ),
+        RepositoryProvider<ProfileRepository>(
+          create: (context) => ProfileRepository(
+            profileDataSource: ApiProfileDataSource(),
           ),
         ),
       ],
@@ -99,17 +106,21 @@ class MyApp extends StatelessWidget {
                 commentsRepository: context.read<CommentsRepository>(),
               ),
             ),
-              BlocProvider<ProfileGetBloc>(
+            BlocProvider<ProfileGetBloc>(
               create: (context) => ProfileGetBloc(
                 profileRepository: context.read<ProfileRepository>(),
               ),
-),
+            ),
+            BlocProvider<PostProfileGetBloc>(
+              create: (context) => PostProfileGetBloc(
+                profileRepository: context.read<ProfileRepository>(),
+              ),
+            ),
           ],
           child: MaterialApp.router(
             title: 'Flitter',
             routerConfig: router,
           )),
     );
-
   }
 }
