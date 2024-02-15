@@ -1,3 +1,7 @@
+import 'package:flitter/models/get_profile_posts.dart';
+//import 'package:flitter/services/repository/profile/api_profile_data_source.dart';
+//import 'package:flitter/services/repository/profile/profile_repository.dart';
+
 class GetPost {
   final int itemsReceived;
   final int curPage;
@@ -36,6 +40,59 @@ class GetPost {
       offset: json['offset'],
       itemsTotal: json['itemsTotal'],
       pageTotal: json['pageTotal'],
+      items: itemsList,
+    );
+  }
+
+  factory GetPost.fromGetPostProfile(GetProfilePosts getProfilePosts) {
+    List<Item> itemsList = [];
+    for (var item in getProfilePosts.items) {
+      var itemId = item.id;
+      var itemCreatedAt = item.createdAt;
+      var itemContent = item.content;
+      var itemCommentsCount = item.commentsCount;
+
+      Image? itemImage;
+      final image = item.image;
+      if(image != null) {
+        itemImage = Image(url: image.url);
+      }
+
+      var authorId = item.userId;
+      int authorCreatedAt = 0;
+      String authorName = "";
+
+        /*
+      ApiProfileDataSource apiProfileDataSource = ApiProfileDataSource();
+      apiProfileDataSource.doGetProfile(authorId).then((getProfile) => {
+        authorCreatedAt = getProfile.createdAt,
+        authorName = getProfile.name,
+      });
+      */
+      Author author = Author(id: authorId, createdAt: authorCreatedAt, name: authorName);
+
+      Item newItem = Item(
+        id: itemId,
+        createdAt: itemCreatedAt,
+        content: itemContent,
+        image: itemImage,
+        author: author,
+        commentsCount: itemCommentsCount,
+      );
+
+      itemsList.add(newItem);
+
+    }
+
+
+    return GetPost(
+      itemsReceived: getProfilePosts.itemsReceived,
+      curPage: getProfilePosts.curPage,
+      nextPage: getProfilePosts.nextPage,
+      prevPage: getProfilePosts.prevPage,
+      offset: getProfilePosts.offset,
+      itemsTotal: getProfilePosts.itemsTotal,
+      pageTotal: getProfilePosts.pageTotal,
       items: itemsList,
     );
   }
