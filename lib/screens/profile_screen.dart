@@ -69,11 +69,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   case ProfileGetStatus.success:
                     final GetProfile profile = state.profile!;
-                    if (postNumber == 0) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
                     return ProfileHeader(
                       profile: profile,
                       postNumber: postNumber,
