@@ -1,6 +1,4 @@
 import 'package:flitter/models/get_profile_posts.dart';
-//import 'package:flitter/services/repository/profile/api_profile_data_source.dart';
-//import 'package:flitter/services/repository/profile/profile_repository.dart';
 
 class GetPost {
   final int itemsReceived;

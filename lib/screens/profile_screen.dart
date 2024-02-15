@@ -2,18 +2,11 @@ import 'package:flitter/services/post_profile_get/post_profile_get_bloc.dart';
 import 'package:flitter/utils/ui/profile_body.dart';
 import 'package:flitter/utils/ui/profile_header.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/get_post.dart';
 import '../models/get_profile.dart';
-import '../models/get_profile_posts.dart';
-import '../services/connexion/connexion_bloc.dart';
 import '../services/profile_get/profile_get_bloc.dart';
-import '../utils/icons/comment_icon.dart';
-import '../utils/icons/post/icons_is_me_post.dart';
-import '../utils/ui/tile_post.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key, required this.state});

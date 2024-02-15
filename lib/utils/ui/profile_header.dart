@@ -1,10 +1,5 @@
-import 'package:flitter/models/get_post.dart';
 import 'package:flitter/models/get_profile.dart';
-import 'package:flitter/utils/date_formater_get_timestamp.dart';
-import 'package:flitter/utils/shimmer_image_url.dart';
-import 'package:flitter/utils/voir_plus_string.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:random_avatar/random_avatar.dart';
 import 'dart:math' as math;
 

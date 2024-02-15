@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flitter/models/connexion_user.dart';
 import 'package:flitter/models/inscription_user.dart';
 import 'package:flitter/models/user.dart';
-
 import 'auth_data_source.dart';
 
 class ApiAuthDataSource extends AuthDataSource {

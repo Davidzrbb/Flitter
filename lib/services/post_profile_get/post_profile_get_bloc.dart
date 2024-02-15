@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:flitter/models/get_profile.dart';
 import 'package:flitter/models/get_profile_posts.dart';
 import 'package:flitter/services/repository/profile/profile_repository.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 
 import '../../models/get_post.dart';
