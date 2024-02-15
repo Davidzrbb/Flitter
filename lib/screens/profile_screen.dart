@@ -84,37 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Expanded(
             flex: 3,
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: BlocBuilder<PostProfileGetBloc, PostProfileGetState>(
-                builder: (context, state) {
-                  switch (state.status) {
-                    case PostProfileGetStatus.initial:
-                      return const SizedBox();
-                    case PostProfileGetStatus.loading:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    case PostProfileGetStatus.error:
-                      return Center(
-                        child: Text(state.error.toString()),
-                      );
-                    case PostProfileGetStatus.success:
-                      if (state.items == null) {
-                        return const SizedBox();
-                      } else {
-                        if (postNumber != state.itemsTotal) {
-                          _changePostNumber(state.itemsTotal);
-                          postNumber = state.itemsTotal;
-                        }
-                        return ProfileBody(
-                          items: state.items!,
-                          hasMore: state.hasMore!,
-                        );
-                      }
-                  }
-                },
-              ),
+            child: ProfileBody(
+              idUser: userId,
             ),
           ),
         ],
@@ -131,20 +102,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
     productsBloc.add(GetProfileAllPosts(userId, refresh));
     refresh = true;
-  }
-
-  SchedulerBinding? get scheduler => SchedulerBinding.instance;
-
-  _changePostNumber(int number) {
-    scheduler!.addPostFrameCallback((_) {
-      setState(() {
-        postNumber = number;
-      });
-    });
-  }
-
-  Future<void> _refresh() async {
-    final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
-    productsBloc.add(GetProfileAllPosts(userId, true));
   }
 }

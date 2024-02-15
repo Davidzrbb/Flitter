@@ -23,14 +23,16 @@ class ProfileGetBloc extends Bloc<ProfileGetEvent, ProfileGetState> {
 
   _getProfileInfo(GetProfileInfo event, Emitter<ProfileGetState> emit) async {
     try {
-      emit(state.copyWith(
+      /*emit(state.copyWith(
         status: ProfileGetStatus.loading,
-      ));
+      ));*/
       GetProfile profile = await profileRepository.doGetProfile(event.userId);
       emit(state.copyWith(
         status: ProfileGetStatus.success,
         profile: profile,
       ));
+      print(state.status);
+
     } catch (error) {
       emit(state.copyWith(
         status: ProfileGetStatus.error,

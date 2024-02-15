@@ -15,67 +15,144 @@ import '../../services/connexion/connexion_bloc.dart';
 import '../icons/comment_icon.dart';
 import '../icons/post/icons_is_me_post.dart';
 
-class ProfileBody extends StatelessWidget {
-  const ProfileBody({super.key, required this.items ,required this.hasMore});
+class ProfileBody extends StatefulWidget {
+  //const ProfileBody({super.key, required this.items ,required this.hasMore});
+  const ProfileBody({super.key, required this.idUser});
 
-  final List<Item> items;
-  final bool hasMore;
+  final int idUser;
+
+  @override
+  State<ProfileBody> createState() => _ProfileBodyState();
+}
+
+class _ProfileBodyState extends State<ProfileBody> {
+  int postNumber = 0;
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getAll();
+    _controller.addListener(() {
+      if (_controller.offset == _controller.position.maxScrollExtent) {
+        //_getAll();
+        _getUpdateList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: BlocBuilder<PostProfileGetBloc, PostProfileGetState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case PostProfileGetStatus.initial:
+              return const SizedBox();
+            case PostProfileGetStatus.loading:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case PostProfileGetStatus.error:
+              return Center(
+                child: Text(state.error.toString()),
+              );
+            case PostProfileGetStatus.success:
+              if (state.items == null) {
+                return const SizedBox();
+              } else {
+                if (postNumber != state.itemsTotal) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _changePostNumber(state.itemsTotal);
+                  });
+                  //postNumber = state.itemsTotal;
+                }
 
-    return ListView.separated(
-      itemCount: items.length + 1,
-      separatorBuilder: (context, _) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: 1,
-          color: Colors.grey.shade300,
-        ),
-      ),
-      itemBuilder: (context, index) {
-        if (index < items.length) {
-          Item item = items[index];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TilePost(
-                item: item,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0, vertical: 8.0),
-                child: BlocBuilder<ConnexionBloc, ConnexionState>(
-                  builder: (context, stateConnexion) {
-                    if (stateConnexion.user?.id == item.author.id) {
-                      return IconsIsMe(item: item);
+                return ListView.separated(
+                  controller: _controller,
+                  itemCount: state.items!.length + 1,
+                  separatorBuilder: (context, _) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 1,
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+                  itemBuilder: (context, index) {
+                    if (index < state.items!.length) {
+                      Item item = state.items![index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TilePost(
+                            item: item,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30.0, vertical: 8.0),
+                            child: BlocBuilder<ConnexionBloc, ConnexionState>(
+                              builder: (context, stateConnexion) {
+                                if (stateConnexion.user?.id == item.author.id) {
+                                  return IconsIsMe(item: item);
+                                }
+                                return CommentIcon(
+                                    item: item,
+                                    onTap: () {
+                                      context.pushNamed('display_comment',
+                                          pathParameters: {
+                                            'postId': item.id.toString(),
+                                          });
+                                    });
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32.0),
+                        child: Center(
+                          child: state.hasMore!
+                              ? const CircularProgressIndicator()
+                              : const Text('Il n y a plus de posts !'),
+                        ),
+                      );
                     }
-                    return CommentIcon(
-                        item: item,
-                        onTap: () {
-                          context.pushNamed('display_comment',
-                              pathParameters: {
-                                'postId': item.id.toString(),
-                              });
-                        });
                   },
-                ),
-              ),
-            ],
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32.0),
-            child: Center(
-              child: hasMore
-                  ? const CircularProgressIndicator()
-                  : const Text('Il n y a plus de posts !'),
-            ),
-          );
-        }
-      },
+                );
+              }
+          }
+        },
+      ),
     );
   }
 
+  Future<void> _refresh() async {
+    print('refresh !');
+    final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
+    productsBloc.add(GetProfileAllPosts(widget.idUser, true));
+  }
 
+  _changePostNumber(int number) {
+    setState(() {
+      postNumber = number;
+    });
+  }
+
+  Future<void> _getAll() async {
+    final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
+    productsBloc.add(GetProfileAllPosts(widget.idUser, false));
+  }
+
+  Future<void> _getUpdateList() async {
+    final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
+    productsBloc.add(GetProfileAllPosts(widget.idUser, true));
+  }
 }
