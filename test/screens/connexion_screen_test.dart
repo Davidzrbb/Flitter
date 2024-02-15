@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:flitter/models/connexion_user.dart';
 import 'package:flitter/services/connexion/connexion_bloc.dart';
@@ -53,7 +52,7 @@ void main() {
       await tester.tap(find.text('Sign in'));
       await tester.pump();
 
-      verify(connexionBloc.add(ConnexionSubmitted(ConnexionUser(email: 'test@example.com', password: 'password')))).called(1);
+      verify(connexionBloc.add(ConnexionSubmitted(const ConnexionUser(email: 'test@example.com', password: 'password')))).called(1);
     });
 
   });

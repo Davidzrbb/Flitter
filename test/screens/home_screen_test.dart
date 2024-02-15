@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flitter/utils/ui/post_list.dart';
-import 'package:flitter/models/write_post.dart';
 import 'package:flitter/services/connexion/connexion_bloc.dart';
 import 'package:flitter/services/post_create/post_bloc.dart';
-import 'package:flitter/utils/ui/floating_action_button_screen.dart';
 import 'package:flitter/screens/home_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -27,7 +25,7 @@ void main() {
     });
 
     testWidgets('HomeScreen renders correctly', (WidgetTester tester) async {
-      when(connexionBloc.state).thenReturn(ConnexionState(user: User()));
+      when(connexionBloc.state).thenReturn(ConnexionState(user: const User()));
 
       await tester.pumpWidget(
         MaterialApp(
@@ -51,7 +49,7 @@ void main() {
     });
 
     testWidgets('HomeScreen log out button triggers sign out', (WidgetTester tester) async {
-      when(connexionBloc.state).thenReturn(ConnexionState(user: User()));
+      when(connexionBloc.state).thenReturn(ConnexionState(user: const User()));
 
       await tester.pumpWidget(
         MaterialApp(
