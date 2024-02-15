@@ -17,10 +17,12 @@ class VoirPlusString extends StatelessWidget {
     if (content.trim().length > 15) {
       return Row(
         children: [
-          Text(
-            '${content.substring(0, 15)}... ',
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.black),
+          Expanded(
+            child: Text(
+              '${content.substring(0, 15)}...',
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(color: Colors.black),
+            ),
           ),
           TextButton(
             //remove the button's padding and margin because it's inside a row
