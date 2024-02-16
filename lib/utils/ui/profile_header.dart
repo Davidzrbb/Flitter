@@ -23,14 +23,15 @@ class ProfileHeader extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              decoration: BoxDecoration(color: Colors.blue),
+              decoration: const BoxDecoration(color: Colors.blue),
+              width: double.infinity,
               child: Row(
                 children: [
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 60, left: 10),
                       child: Text(
-                        this.profile.name,
+                        profile.name,
                       ),
                     ),
                   ),
@@ -38,14 +39,13 @@ class ProfileHeader extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 60, right: 10),
                       child: Text(
-                        "${this.postNumber.toString()} Posts",
+                        "${postNumber.toString()} Posts",
                         textAlign: TextAlign.end,
                       ),
                     ),
                   ),
                 ],
               ),
-              width: double.infinity,
             ),
           ),
         ],
@@ -54,7 +54,7 @@ class ProfileHeader extends StatelessWidget {
         child: Container(
           alignment: AlignmentDirectional.center,
           child: RandomAvatar(
-            this.profile.id.toString(),
+            profile.id.toString(),
             height: 100,
             width: 100,
           ),

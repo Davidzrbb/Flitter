@@ -10,12 +10,13 @@ import '../icons/post/icons_is_me_post.dart';
 
 class ProfileBody extends StatefulWidget {
   //const ProfileBody({super.key, required this.items ,required this.hasMore});
-  const ProfileBody({super.key, required this.idUser});
+  ProfileBody({super.key, required this.idUser});
 
   final int idUser;
 
   @override
   State<ProfileBody> createState() => _ProfileBodyState();
+
 }
 
 class _ProfileBodyState extends State<ProfileBody> {

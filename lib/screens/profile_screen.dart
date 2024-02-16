@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flitter/services/post_profile_get/post_profile_get_bloc.dart';
 import 'package:flitter/utils/ui/profile_body.dart';
 import 'package:flitter/utils/ui/profile_header.dart';
@@ -21,8 +23,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _getProfileByIdUser();
-    _getProfilePostsByIdUser();
-
     super.initState();
   }
 
@@ -32,9 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ? int.parse(userIdString)
         : 0; // or another default value
   }
-
-  bool refresh = false;
-  int postNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +59,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   case ProfileGetStatus.success:
                     final GetProfile profile = state.profile!;
-                    return ProfileHeader(
-                      profile: profile,
-                      postNumber: postNumber,
+                    return BlocBuilder<PostProfileGetBloc, PostProfileGetState>(
+                      builder: (context, postState) {
+                        return ProfileHeader(
+                          profile: profile,
+                          postNumber: postState.itemsTotal,
+                        );
+                      },
                     );
                 }
               },
@@ -84,11 +85,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
   _getProfileByIdUser() {
     final productsBloc = BlocProvider.of<ProfileGetBloc>(context);
     productsBloc.add(GetProfileInfo(userId));
-  }
-
-  _getProfilePostsByIdUser() {
-    final productsBloc = BlocProvider.of<PostProfileGetBloc>(context);
-    productsBloc.add(GetProfileAllPosts(userId, refresh));
-    refresh = true;
   }
 }
