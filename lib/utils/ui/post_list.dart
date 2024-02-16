@@ -61,16 +61,26 @@ class _PostListScreenState extends State<PostListScreen> {
                 return ListView.separated(
                   controller: _controller,
                   itemCount: state.items!.length + 1,
-                  separatorBuilder: (context, _) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 1,
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
+                  separatorBuilder: (context, index) {
+                    if (state.items![index].content != '') {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 1,
+                          color: Colors.grey.shade300,
+                        ),
+                      );
+                    } else {
+                      // Retourne un conteneur vide si la condition n'est pas remplie
+                      return const SizedBox();
+                    }
+                  },
                   itemBuilder: (context, index) {
                     if (index < state.items!.length) {
                       Item item = state.items![index];
+                      if (item.content == '') {
+                        return const SizedBox();
+                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
